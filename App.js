@@ -3,13 +3,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
-import { StyleSheet, Text, View } from "react-native";
+import Recipe from "./screens/Recipe";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import AddRecipe from "./screens/AddRecipe";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { IsLoadingAndEditingProvider } from "./context/IsLoadingAndEditingContext";
 import { UserProvider, useUser } from "./context/UserContext";
 
 import { Provider as PaperProvider } from "react-native-paper";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { styles } from "./styles/styles";
 
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -86,6 +90,57 @@ const AuthStackNavigator = () => {
 };
 
 export default function App() {
+  const Tab = createBottomTabNavigator();
+  const Stack = createStackNavigator();
+
+  const TabNavigator = () => {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Recipe"
+          component={Recipe}
+          options={{
+            title: "recipe",
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <MaterialCommunityIcons
+                  name="food-variant"
+                  size={size}
+                  color={color}
+                />
+              );
+            },
+            headerShown: false,
+          }}
+        />
+        <Tab.Screen
+          name="Add Recipe"
+          component={AddRecipe}
+          options={{
+            title: "Add Recipe",
+            tabBarIcon: ({ size, color }) => {
+              return (
+                <Ionicons name="add-circle-sharp" size={size} color={color} />
+              );
+            },
+            headerShown: false,
+          }}
+        />
+      </Tab.Navigator>
+    );
+  };
+
+  const StackNavigator = () => {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen
+          name="TabNavigator"
+          component={TabNavigator}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    );
+  };
   return (
     <PaperProvider>
       <UserProvider>
