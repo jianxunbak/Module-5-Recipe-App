@@ -17,6 +17,7 @@ import RecipesScreen from "./screens/RecipesScreen";
 import FavouritesScreen from "./screens/FavouritesScreen";
 import LoginScreen from "./screens/LoginScreen";
 import AddRecipeScreen from "./screens/AddRecipeScreen";
+import SignUpScreen from "./screens/SignUpScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -77,6 +78,7 @@ const AuthStackNavigator = () => {
           <AuthStack.Screen name="Home" component={HomeScreen} />
           <AuthStack.Screen name="Login" component={LoginScreen} />
           <AuthStack.Screen name="Recipes" component={RecipesScreen} />
+          <AuthStack.Screen name="SignUp" component={SignUpScreen} />
         </>
       )}
     </AuthStack.Navigator>
