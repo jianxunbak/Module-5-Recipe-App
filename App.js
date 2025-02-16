@@ -1,13 +1,10 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 
-import Recipe from "./screens/Recipe";
+import Recipe from "./screens/Recipe.archive";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import AddRecipe from "./screens/AddRecipe";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { IsLoadingAndEditingProvider } from "./context/IsLoadingAndEditingContext";
 import { UserProvider, useUser } from "./context/UserContext";
@@ -45,7 +42,23 @@ const TabNavigator = () => {
             );
           },
         }}
-      ></Tab.Screen>
+      />
+      <Tab.Screen
+        name="addRecipe"
+        component={AddRecipeScreen}
+        options={{
+          title: "Add recipe",
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <Ionicons
+                name="add-circle-sharp"
+                size={size}
+                color={color}
+              ></Ionicons>
+            );
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 };
