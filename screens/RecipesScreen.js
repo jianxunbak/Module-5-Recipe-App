@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 
 import { Button } from "react-native-paper";
-import styles from "../styles/styles";
+import { styles } from "../styles/styles";
 
 const RecipesScreen = () => {
   return (
