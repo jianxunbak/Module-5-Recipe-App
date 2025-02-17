@@ -4,6 +4,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.seriouseats.com/thmb/KOV3OvnLeh6RW64lEnRixbRxOq4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/SEA-QiAi-stir-fried-lo-mein-noodles-pork-vegetables-recipe-hero-a55a4baa9f22449fbe036142f1047430.jpg",
     title: "Stir Fried Noodles",
+    cuisine: "Chinese",
     description:
       "A quick and tasty stir-fried noodle recipe packed with veggies and savory sauce.",
     ingredients: [
@@ -27,6 +28,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.sweetashoney.co/wp-content/uploads/Sauteed-Eggplant-2.jpg",
     title: "Seared Eggplant",
+    cuisine: "Mediterranean",
     description:
       "This seared eggplant dish is perfect for a light and flavorful vegetarian meal.",
     ingredients: [
@@ -49,6 +51,7 @@ const sampleRecipe = [
     imgSrc:
       "https://images.contentstack.io/v3/assets/blt8a393bb3b76c0ede/blt653e46ad897ffac9/65482c54d2a103040ad8d9ef/savoury-breakfast-muffins-recipe-header.jpg?height=675.0&width=1200.0&crop=1200.0%2C675.0%2Cx0.0%2Cy45.0&format=pjpg&auto=webp",
     title: "Savory Carrot Muffins",
+    cuisine: "American",
     description:
       "Delicious savory muffins made with carrots and a blend of spices.",
     ingredients: [
@@ -72,6 +75,7 @@ const sampleRecipe = [
     imgSrc:
       "https://getfish.com.au/cdn/shop/articles/Step_4_-_crispy_salmon.png?v=1715832861",
     title: "Dijon Mustard Salmon",
+    cusine: "French",
     description:
       "A simple yet flavorful Dijon mustard salmon baked to perfection.",
     ingredients: [
@@ -95,6 +99,7 @@ const sampleRecipe = [
     imgSrc:
       "https://static01.nyt.com/images/2014/06/02/dining/Rice-Noodles/Rice-Noodles-superJumbo-v2.jpg",
     title: "Rice Noodles with Vegetables",
+    cusine: "Asian",
     description:
       "A light and refreshing rice noodle dish with sautéed vegetables.",
     ingredients: [
@@ -116,6 +121,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.allrecipes.com/thmb/ogHu01q-lng_VdeEP6Pd-SPsNMk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/7937621-e1fb4dfc9dbd46bf979dafa94b83f35e.jpg",
     title: "Garlic Roasted Potatoes",
+    cuisine: "American",
     description:
       "Crispy roasted potatoes with a delicious garlic and herb seasoning.",
     ingredients: [
@@ -137,6 +143,7 @@ const sampleRecipe = [
     imgSrc:
       "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2022-10-meatloaf-burgers%2Fmeatloaf-burgers-1158",
     title: "Meatloaf Burger",
+    cuisine: "American",
     description:
       "A hearty meatloaf patty served in a burger bun with your favorite toppings.",
     ingredients: [
@@ -160,6 +167,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.allrecipes.com/thmb/wgfzwyWYvsiiZNkrkb2ei2oz52s=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/24264-sloppy-joes-dianne-2x1-1-8f9d52b9b47446eb96700b404096b8f9.jpg",
     title: "Sloppy Joes",
+    cuisine: "American",
     description:
       "A tangy and delicious sloppy joes sandwich made with seasoned ground beef.",
     ingredients: [
@@ -181,6 +189,7 @@ const sampleRecipe = [
     imgSrc:
       "https://images.squarespace-cdn.com/content/v1/56cb2b157da24faa1f771305/1490740012235-M3STBVK7CA7GEIS0R603/breakfast+bowl-1512.jpg?format=1500w",
     title: "Smoked Salmon Bowl",
+    cuisine: "American",
     description:
       "A fresh and healthy smoked salmon bowl with rice, avocado, and pickled veggies.",
     ingredients: [
@@ -202,6 +211,7 @@ const sampleRecipe = [
     imgSrc:
       "https://thesaltycooker.com/wp-content/uploads/2023/01/Chili-BLOG.jpg",
     title: "Beef Chili",
+    cuisine: "American",
     description:
       "A hearty beef chili made with beans, tomatoes, and a blend of spices.",
     ingredients: [
@@ -223,6 +233,7 @@ const sampleRecipe = [
     imgSrc:
       "https://i0.wp.com/www.cearaskitchen.com/wp-content/uploads/2015/07/IMG_26131.jpg",
     title: "Avocado and Chickpea Salad",
+    cuisine: "Mediterranean",
     description:
       "A refreshing salad combining creamy avocado and protein-packed chickpeas.",
     ingredients: [
@@ -245,6 +256,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.allrecipes.com/thmb/_g_SFdKUwSniBWbzaQWEiGQw6SY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/51535-fresh-southern-peach-cobbler-ddmfs-0652-3x4-cb8d3d5a1e8548728fa1fc3d21fec1f0.jpg",
     title: "Classic Peach Cobbler",
+    cuisine: "American",
     description: "A warm dessert featuring juicy peaches and a buttery crust.",
     ingredients: [
       "Fresh peaches",
@@ -267,6 +279,7 @@ const sampleRecipe = [
     imgSrc:
       "https://nz.simplynootropics.com/cdn/shop/articles/Copy_of_Copy_of_Untitled_1200_x_800_px_16.png?v=1714490425&width=1100",
     title: "Spinach and Feta Quiche",
+    cuisine: "French",
     description: "A savory quiche loaded with spinach and feta cheese.",
     ingredients: [
       "Spinach",
@@ -289,6 +302,7 @@ const sampleRecipe = [
     imgSrc:
       "https://i0.wp.com/smittenkitchen.com/wp-content/uploads//2020/03/sk-ultimate-banana-bread.jpg?fit=1200%2C800&ssl=1",
     title: "Moist Banana Bread",
+    cuisine: "American",
     description:
       "A deliciously moist banana bread perfect for breakfast or a snack.",
     ingredients: [
@@ -312,6 +326,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.simplyrecipes.com/thmb/iRTpAzEQ7TP8_prwXjuf_tyxtPA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Simply-Recipes-Easy-Zucchini-Bread-LEAD-1v2-10c6fca11bab4da8b5b388436a919328.jpg",
     title: "Zucchini Bread",
+    cuisine: "American",
     description: "A flavorful bread made with fresh zucchini and warm spices.",
     ingredients: [
       "Zucchini",
@@ -334,6 +349,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.sidechef.com/recipe/e2488170-7e2d-45de-a5fd-b6a4ec24df9a.jpg?d=1408x1120",
     title: "Chickpea Coconut Curry",
+    cuisine: "Indian",
     description: "A creamy and aromatic chickpea curry with coconut milk.",
     ingredients: [
       "Chickpeas",
@@ -356,6 +372,7 @@ const sampleRecipe = [
     imgSrc:
       "https://jimcooksfoodgood.com/wp-content/uploads/2022/12/NEw-ENgland-Greek-pizza-scaled.jpg",
     title: "Greek Flatbread Pizza",
+    cuisine: "Mediterranean",
     description:
       "A Mediterranean-inspired pizza topped with fresh ingredients.",
     ingredients: [
@@ -379,6 +396,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.foodandwine.com/thmb/4_UScMzHQCxZzACBITHHmT_EM3U=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Chocolate-Chunk-Halwah-Cookies-FT-RECIPE0923-1f8df755df6d468da98887aa846a2fe3.jpg",
     title: "Classic Chocolate Chip Cookies",
+    cuisine: "American",
     description:
       "Soft and chewy chocolate chip cookies perfect for any occasion.",
     ingredients: [
@@ -402,6 +420,7 @@ const sampleRecipe = [
     imgSrc:
       "https://www.eatwell101.com/wp-content/uploads/2020/10/Garlic-Herb-Roasted-Potatoes-Carrots-and-Zucchini-recipe.jpg",
     title: "Herb-Roasted Vegetables",
+    cuisine: "American",
     description:
       "A mix of seasonal vegetables roasted to perfection with herbs.",
     ingredients: [
