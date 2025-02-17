@@ -25,6 +25,7 @@ import RecipeCardScreen from "./screens/RecipeCardScreen";
 import CameraScreen from "./screens/CameraScreen";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
+
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
