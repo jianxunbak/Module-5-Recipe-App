@@ -1,5 +1,5 @@
 import { FlatList, Image, ScrollView, Text, View } from "react-native";
-import RecipeStyles from "../styles/RecipeStyles";
+import RecipeStyles from "../styles/RecipeCardStyles";
 import sampleRecipe from "./SampleRecipes";
 import { SafeAreaView } from "react-native-safe-area-context";
 

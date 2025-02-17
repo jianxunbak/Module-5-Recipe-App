@@ -20,6 +20,8 @@ import LoginScreen from "./screens/LoginScreen";
 import AddRecipeScreen from "./screens/AddRecipeScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import { RecipeValidationProvider } from "./context/RecipeValidationContext";
+import RecipeCardScreen from "./screens/RecipeCardScreen";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const Tab = createBottomTabNavigator();
 
@@ -60,6 +62,22 @@ const TabNavigator = () => {
           },
         }}
       />
+      <Tab.Screen
+        name="Recipes"
+        component={RecipesScreen}
+        options={{
+          title: "Recipes",
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <FontAwesome6
+                name="bowl-food"
+                size={size}
+                color={color}
+              ></FontAwesome6>
+            );
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -71,6 +89,12 @@ const DrawerNavigator = () => (
     <Drawer.Screen name="Recipes" component={TabNavigator} />
     <Drawer.Screen name="Favourites" component={FavouritesScreen} />
     <Drawer.Screen name="Profile" component={ProfileScreen} />
+    <Drawer.Screen
+      name="Recipe Details"
+      component={RecipeStackNavigator}
+      headerShown={false}
+      options={{ drawerItemStyle: { display: "none" } }}
+    />
   </Drawer.Navigator>
 );
 
@@ -79,7 +103,7 @@ const RecipeStack = createStackNavigator();
 const RecipeStackNavigator = () => (
   <RecipeStack.Navigator screenOptions={{ headerTransparent: true }}>
     <RecipeStack.Screen name="Recipes" component={RecipesScreen} />
-    <RecipeStack.Screen name="Add Recipe" component={AddRecipeScreen} />
+    <RecipeStack.Screen name="Recipe card" component={RecipeCardScreen} />
   </RecipeStack.Navigator>
 );
 
@@ -95,7 +119,7 @@ const AuthStackNavigator = () => {
         <>
           <AuthStack.Screen name="Home" component={HomeScreen} />
           <AuthStack.Screen name="Login" component={LoginScreen} />
-          <AuthStack.Screen name="Recipes" component={RecipesScreen} />
+          <AuthStack.Screen name="Recipe card" component={RecipeCardScreen} />
           <AuthStack.Screen name="SignUp" component={SignUpScreen} />
         </>
       )}
