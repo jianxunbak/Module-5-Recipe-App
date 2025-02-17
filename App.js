@@ -21,6 +21,8 @@ import AddRecipeScreen from "./screens/AddRecipeScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import { RecipeValidationProvider } from "./context/RecipeValidationContext";
 import RecipeCardScreen from "./screens/RecipeCardScreen";
+import CameraScreen from "./screens/CameraScreen";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const Tab = createBottomTabNavigator();
 
@@ -77,6 +79,23 @@ const TabNavigator = () => {
           },
         }}
       /> */}
+
+      <Tab.Screen
+        name="camera screen"
+        component={CameraScreen}
+        options={{
+          title: "Camera",
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <FontAwesome
+                name="camera"
+                size={size}
+                color={color}
+              ></FontAwesome>
+            );
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 };
