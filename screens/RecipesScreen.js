@@ -1,14 +1,23 @@
 import { FlatList, Image, ScrollView, Text, TextInput, View } from "react-native";
 import RecipeStyles from "../styles/RecipeStyles";
-import sampleRecipe from "./SampleRecipes";
+import sampleRecipe from "../screens/SampleRecipes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
+import RNPickerSelect from "react-native-picker-select";
 
 export default Recipe = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCuisine, setSelectedCuisine] = useState("");
 
+  const cuisines = [...new Set(sampleRecipe
+    .map(recipe => recipe.cuisine)
+    .filter(cuisine => cuisine !== undefined && cuisine !== "")
+  )];
+  
+  // filters the recipes based on the search term and selected cuisine
   const filteredRecipes = sampleRecipe.filter(recipe =>
-    recipe.title.toLowerCase().includes(searchTerm.toLowerCase())
+    recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (selectedCuisine === "" || recipe.cuisine === selectedCuisine)
   );
 
   return (
@@ -19,6 +28,20 @@ export default Recipe = () => {
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
+
+      <RNPickerSelect
+        onValueChange={setSelectedCuisine}
+        items={[
+          { label: "All Cuisines", value: "" },
+          ...cuisines.map(cuisine => ({ label: cuisine, value: cuisine }))
+        ]}
+        style={{
+          inputIOS: RecipeStyles.picker,
+          inputAndroid: RecipeStyles.picker
+        }}
+        placeholder={{ label: "Select Cuisine", value: "" }}
+      />
+
       <ScrollView style={RecipeStyles.scrollView}>
         {filteredRecipes.length > 0 ? (
           filteredRecipes.map((selectedRecipe, index) => (
