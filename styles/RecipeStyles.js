@@ -40,6 +40,15 @@ const RecipeStyles = StyleSheet.create({
     textAlign: "center",
     margin: 5,
   },
+  searchBar: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    margin: 10,
+    backgroundColor: '#f9f9f9',
+  },
 });
 
 export default RecipeStyles;
