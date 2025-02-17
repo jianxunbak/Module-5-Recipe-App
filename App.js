@@ -5,6 +5,7 @@ import Recipe from "./screens/Recipe.archive";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { IsLoadingAndEditingProvider } from "./context/IsLoadingAndEditingContext";
 import { UserProvider, useUser } from "./context/UserContext";
@@ -211,3 +212,12 @@ export default function App() {
     </PaperProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
