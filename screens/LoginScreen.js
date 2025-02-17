@@ -20,10 +20,20 @@ const LoginScreen = ({ navigation }) => {
 
     // Simulate login request (replace with real authentication logic)
     setTimeout(() => {
-      setUser({ name: "John Doe", email });
-      setLoading(false);
-      setIsLoading(false);
-      navigation.replace("Recipes"); // Navigate to Recipes
+      console.log("Inside setTimeout");
+      setUser({ name: "Foodie Tan", email: "foodietan@gmail.com" });
+      console.log("set user done");
+      setLoading((prev) => {
+        console.log("prev loading state: ", prev);
+        return false;
+      });
+      // setIsLoading((prev) => {
+      //   return false;
+      // });
+      console.log("User Logged In, Navigating Away...");
+      // console.log(navigation.getState());
+      // 🔹 Reset the stack to ensure RecipesScreen is shown after login
+      navigation.navigate("Recipe");
     }, 2000);
   };
 

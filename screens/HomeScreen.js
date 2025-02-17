@@ -19,8 +19,8 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleViewRecipes = () => {
-    // Navigate to the Recipe List Screen (you would create this screen next)
-    navigation.navigate("Recipes");
+    // Navigate to the Recipe List Screen
+    navigation.navigate("Recipe");
   };
 
   return (
