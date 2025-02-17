@@ -7,9 +7,21 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddRecipeStyles from "../styles/AddRecipeStyles";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { RecipeValidationContext } from "../context/RecipeValidationContext";
+import recipeApi from "../api/recipeApi";
 
 export default AddRecipe = () => {
+  const navigate = useNavigation();
+
+  const {
+    validateRealTimeField,
+    validationOnSubmit,
+    formErrors,
+    setFormErrors,
+  } = useContext(RecipeValidationContext);
+
   const [recipe, setRecipe] = useState({
     imgSrc: "",
     title: "",
@@ -54,6 +66,78 @@ export default AddRecipe = () => {
     }
   };
 
+  const handleCancel = () => {
+    setRecipe({
+      imgSrc: "",
+      title: "",
+      description: "",
+      ingredients: [""],
+      steps: [""],
+    });
+    navigate.navigate("Recipes", { screen: "Home" });
+  };
+
+  const handleInput = (name, value, index = null) => {
+    // if (!value) return; // Avoid processing empty values
+
+    // update the newRecipe state
+    setRecipe((prevRecipe) => {
+      let updatedRecipe = { ...prevRecipe };
+
+      // Handle array fields like 'ingredients' and 'steps'
+      if (name === "ingredients" || name === "steps") {
+        const updatedArray = [...prevRecipe[name]]; // Create a copy of the array
+
+        if (index !== null) {
+          updatedArray[index] = value; // Update the specific index
+        }
+
+        updatedRecipe = {
+          ...prevRecipe,
+          [name]: updatedArray, // Update the array in state
+        };
+      } else {
+        // for nonarray fields
+        updatedRecipe = {
+          ...prevRecipe,
+          [name]: value,
+        };
+      }
+      return updatedRecipe;
+    });
+    validateRealTimeField(name, value, index, recipe);
+  };
+
+  const handleAddRecipe = async () => {
+    const valid = validationOnSubmit(recipe);
+    if (!valid) {
+      // setIsLoading(false);
+      alert("form not complete");
+      return;
+    }
+    try {
+      // setIsLoading(true);
+      const response = await recipeApi.post("/recipe", recipe);
+      if (response.status === 201) {
+        alert(
+          `item added:\nTitle: ${recipe.title}\nDescription: ${recipe.description}\nIngredients: ${recipe.ingredients}\nRecipe: ${recipe.steps}`
+        );
+        navigate.navigate("Recipes", { screen: "Home" });
+      }
+    } catch (error) {
+      console.error("Error adding recipe:", error);
+      alert("Error adding recipe:", error);
+    } finally {
+      setRecipe({
+        imgSrc: "",
+        title: "",
+        description: "",
+        ingredients: [""],
+        steps: [""],
+      });
+    }
+  };
+
   return (
     <SafeAreaView>
       <ScrollView style={AddRecipeStyles.scrollView}>
@@ -62,22 +146,45 @@ export default AddRecipe = () => {
 
           <View style={AddRecipeStyles.input}>
             <Text style={AddRecipeStyles.label}>Title:</Text>
-            <TextInput style={AddRecipeStyles.textInput} value={recipe.title} />
+            <TextInput
+              style={AddRecipeStyles.textInput}
+              value={recipe.title}
+              onChangeText={(updatedTitle) =>
+                handleInput("title", updatedTitle)
+              }
+            />
           </View>
+          {formErrors.title && (
+            <Text style={AddRecipeStyles.formError}>{formErrors.title}</Text>
+          )}
           <View style={AddRecipeStyles.input}>
             <Text style={AddRecipeStyles.label}>Description:</Text>
             <TextInput
               style={AddRecipeStyles.textInput}
               value={recipe.description}
+              onChangeText={(updatedDescription) =>
+                handleInput("description", updatedDescription)
+              }
             />
           </View>
+          {formErrors.description && (
+            <Text style={AddRecipeStyles.formError}>
+              {formErrors.description}
+            </Text>
+          )}
           <View style={AddRecipeStyles.input}>
             <Text style={AddRecipeStyles.label}>Image:</Text>
             <TextInput
               style={AddRecipeStyles.textInput}
               value={recipe.imgSrc}
+              onChangeText={(updatedImage) =>
+                handleInput("imgSrc", updatedImage)
+              }
             />
           </View>
+          {formErrors.imgSrc && (
+            <Text style={AddRecipeStyles.formError}>{formErrors.imgSrc}</Text>
+          )}
           <View style={AddRecipeStyles.list}>
             {recipe.ingredients.map((ingredients, index) => (
               <View key={index} style={AddRecipeStyles.input}>
@@ -87,6 +194,9 @@ export default AddRecipe = () => {
                 <TextInput
                   style={AddRecipeStyles.textInputWithButton}
                   value={ingredients}
+                  onChangeText={(updatedIngredients) =>
+                    handleInput("ingredients", updatedIngredients, index)
+                  }
                 />
                 {index !== recipe.ingredients.length - 1 && (
                   <TouchableOpacity
@@ -100,7 +210,7 @@ export default AddRecipe = () => {
                 )}
                 {index === recipe.ingredients.length - 1 && (
                   <TouchableOpacity
-                    style={AddRecipeStyles.button}
+                    style={AddRecipeStyles.buttonAtInput}
                     onPress={() => {
                       addItem("ingredients");
                     }}
@@ -110,6 +220,11 @@ export default AddRecipe = () => {
                 )}
               </View>
             ))}
+            {formErrors.ingredients && (
+              <Text style={AddRecipeStyles.formError}>
+                {formErrors.ingredients}
+              </Text>
+            )}
           </View>
 
           <View style={AddRecipeStyles.list}>
@@ -119,6 +234,9 @@ export default AddRecipe = () => {
                 <TextInput
                   style={AddRecipeStyles.textInputWithButton}
                   value={steps}
+                  onChangeText={(updatedSteps) =>
+                    handleInput("steps", updatedSteps, index)
+                  }
                 />
 
                 {index !== recipe.steps.length - 1 && (
@@ -134,7 +252,7 @@ export default AddRecipe = () => {
 
                 {index === recipe.steps.length - 1 && (
                   <TouchableOpacity
-                    style={AddRecipeStyles.button}
+                    style={AddRecipeStyles.buttonAtInput}
                     onPress={() => {
                       addItem("steps");
                     }}
@@ -144,7 +262,24 @@ export default AddRecipe = () => {
                 )}
               </View>
             ))}
+            {formErrors.steps && (
+              <Text style={AddRecipeStyles.formError}>{formErrors.steps}</Text>
+            )}
           </View>
+        </View>
+        <View style={AddRecipeStyles.buttons}>
+          <TouchableOpacity
+            style={AddRecipeStyles.button}
+            onPress={() => handleAddRecipe()}
+          >
+            <Text style={AddRecipeStyles.buttonText}>Add</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={AddRecipeStyles.button}
+            onPress={() => handleCancel()}
+          >
+            <Text style={AddRecipeStyles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>

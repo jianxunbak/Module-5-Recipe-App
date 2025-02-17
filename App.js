@@ -19,6 +19,7 @@ import FavouritesScreen from "./screens/FavouritesScreen";
 import LoginScreen from "./screens/LoginScreen";
 import AddRecipeScreen from "./screens/AddRecipeScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+import { RecipeValidationProvider } from "./context/RecipeValidationContext";
 
 const Tab = createBottomTabNavigator();
 
@@ -158,9 +159,11 @@ export default function App() {
     <PaperProvider>
       <UserProvider>
         <IsLoadingAndEditingProvider>
-          <NavigationContainer>
-            <DrawerNavigator />
-          </NavigationContainer>
+          <RecipeValidationProvider>
+            <NavigationContainer>
+              <DrawerNavigator />
+            </NavigationContainer>
+          </RecipeValidationProvider>
         </IsLoadingAndEditingProvider>
       </UserProvider>
     </PaperProvider>

@@ -64,14 +64,19 @@ const AddRecipeStyles = StyleSheet.create({
   },
   button: {
     height: 40,
-    width: 30,
+    width: 80,
     backgroundColor: "black",
     alignItems: "center",
     justifyContent: "center",
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
+    borderRadius: 10,
   },
-
+  buttons: {
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "center",
+    gap: 10,
+    marginBottom: 20,
+  },
   buttonAtInput: {
     height: 40,
     width: 30,
@@ -85,6 +90,11 @@ const AddRecipeStyles = StyleSheet.create({
     color: "white",
     alignItems: "center",
     fontSize: 20,
+  },
+  formError: {
+    fontSize: 12,
+    color: "red",
+    marginLeft: 100,
   },
 });
 

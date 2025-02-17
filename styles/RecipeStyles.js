@@ -37,8 +37,23 @@ const RecipeStyles = StyleSheet.create({
     textAlign: "center",
   },
   list: {
-    textAlign: "center",
-    margin: 5,
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  listIndex: {
+    width: 30,
+    textAlign: "flext-start",
+  },
+  listDetail: {
+    width: 100,
+    textAlign: "justify",
+  },
+
+  listDescription: {
+    width: width - 110,
+    textAlign: "justify",
   },
   searchBar: {
     height: 40,
