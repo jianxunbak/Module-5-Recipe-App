@@ -21,7 +21,6 @@ import AddRecipeScreen from "./screens/AddRecipeScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import { RecipeValidationProvider } from "./context/RecipeValidationContext";
 import RecipeCardScreen from "./screens/RecipeCardScreen";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +61,7 @@ const TabNavigator = () => {
           },
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Recipes"
         component={RecipesScreen}
         options={{
@@ -77,7 +76,7 @@ const TabNavigator = () => {
             );
           },
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };
@@ -86,11 +85,11 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => (
   <Drawer.Navigator>
     {/* <Drawer.Screen name="Home" component={TabNavigator} /> */}
-    <Drawer.Screen name="Recipes" component={TabNavigator} />
+    <Drawer.Screen name="Home" component={TabNavigator} />
     <Drawer.Screen name="Favourites" component={FavouritesScreen} />
     <Drawer.Screen name="Profile" component={ProfileScreen} />
     <Drawer.Screen
-      name="Recipe Details"
+      name="Recipes"
       component={RecipeStackNavigator}
       headerShown={false}
       options={{ drawerItemStyle: { display: "none" } }}
@@ -102,7 +101,7 @@ const RecipeStack = createStackNavigator();
 
 const RecipeStackNavigator = () => (
   <RecipeStack.Navigator screenOptions={{ headerTransparent: true }}>
-    <RecipeStack.Screen name="Recipes" component={RecipesScreen} />
+    <RecipeStack.Screen name="All Recipes" component={RecipesScreen} />
     <RecipeStack.Screen name="Recipe card" component={RecipeCardScreen} />
   </RecipeStack.Navigator>
 );

@@ -50,7 +50,7 @@ export default RecipesScreen = () => {
   );
 
   const handleNavigate = (selectedRecipe) => {
-    navigate.navigate("Recipe Details", {
+    navigate.navigate("Recipes", {
       screen: "Recipe card",
       params: { selectedRecipe: selectedRecipe },
     });
