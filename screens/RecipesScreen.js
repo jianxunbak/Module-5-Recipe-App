@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  Image,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Image, ScrollView, Text, TextInput, View } from "react-native";
 import RecipeStyles from "../styles/RecipeStyles";
 import sampleRecipe from "../screens/SampleRecipes";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -54,67 +47,54 @@ export default Recipe = () => {
       />
 
       <ScrollView style={RecipeStyles.scrollView}>
-        <View style={RecipeStyles.MainContainer}>
-          <Image
-            source={{ uri: selectedRecipe.imgSrc }}
-            style={RecipeStyles.image}
-          />
-          <Text style={RecipeStyles.title}>
-            {selectedRecipe.title.toUpperCase()}
-          </Text>
-          <Text style={RecipeStyles.description}>
-            {selectedRecipe.description}
-          </Text>
-        </View>
-
-        <View style={RecipeStyles.subContainer}>
-          <View>
-            <Text style={RecipeStyles.subTitle}>INGREDIENTS</Text>
-            {/* <FlatList
-              data={selectedRecipe.ingredients}
-              renderItem={({ item, index }) => (
-                <Text style={RecipeStyles.list}>
-                  {index + 1}. {item}
-                </Text>
-              )}
-            /> */}
-            <View>
-              {selectedRecipe.ingredients.map((item, index) => {
-                return (
-                  <View style={RecipeStyles.list}>
-                    <Text key={index} style={RecipeStyles.listIndex}>
-                      {index + 1}:
-                    </Text>
-                    <Text style={RecipeStyles.listDetail}>{item}</Text>
-                  </View>
-                );
-              })}
-            </View>
-          </View>
-        </View>
-        <View style={RecipeStyles.subContainer}>
-          <Text style={RecipeStyles.subTitle}>Steps</Text>
-          <View>
-            {selectedRecipe.steps.map((item, index) => {
-              return (
-                <View style={RecipeStyles.list}>
-                  <Text key={index} style={RecipeStyles.listIndex}>
-                    {index + 1}:
-                  </Text>
-                  <Text style={RecipeStyles.listDescription}>{item}</Text>
-                </View>
-              );
-            })}
-          </View>
-          {/* <FlatList
-            data={selectedRecipe.steps}
-            renderItem={({ item, index }) => (
-              <Text style={RecipeStyles.list}>
-                Step {index + 1}: {item}
+        {filteredRecipes.length > 0 ? (
+          filteredRecipes.map((selectedRecipe, index) => (
+            <View key={index} style={RecipeStyles.MainContainer}>
+              <Image
+                source={{ uri: selectedRecipe.imgSrc }}
+                style={RecipeStyles.image}
+              />
+              <Text style={RecipeStyles.title}>
+                {selectedRecipe.title.toUpperCase()}
               </Text>
-            )}
-          /> */}
-        </View>
+              <Text style={RecipeStyles.description}>
+                {selectedRecipe.description}
+              </Text>
+              <View style={RecipeStyles.subContainer}>
+                <Text style={RecipeStyles.subTitle}>INGREDIENTS</Text>
+                <View>
+                  {selectedRecipe.ingredients.map((item, index) => {
+                    return (
+                      <View style={RecipeStyles.list}>
+                        <Text key={index} style={RecipeStyles.listIndex}>
+                          {index + 1}:
+                        </Text>
+                        <Text style={RecipeStyles.listDetail}>{item}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
+              <View style={RecipeStyles.subContainer}>
+                <Text style={RecipeStyles.subTitle}>Steps</Text>
+                <View>
+                  {selectedRecipe.steps.map((item, index) => {
+                    return (
+                      <View style={RecipeStyles.list}>
+                        <Text key={index} style={RecipeStyles.listIndex}>
+                          {index + 1}:
+                        </Text>
+                        <Text style={RecipeStyles.listDescription}>{item}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
+            </View>
+          ))
+        ) : (
+          <Text style={RecipeStyles.noResults}>No recipes found</Text>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
