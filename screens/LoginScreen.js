@@ -5,7 +5,7 @@ import { useUser } from "../Context/UserContext"; // Import user context
 
 import { TextInput, Button, Text, ActivityIndicator } from "react-native-paper";
 import { styles } from "../styles/styles";
-import { useIsLoadingAndEditing } from "../Context/isLoadingandEditingContext";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 
 const LoginScreen = ({ navigation }) => {
   const { setUser } = useUser(); // Get setUser from UserContext

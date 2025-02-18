@@ -13,7 +13,7 @@ import RNPickerSelect from "react-native-picker-select";
 import recipeApi from "../api/recipeApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useIsLoadingAndEditing } from "../Context/isLoadingandEditingContext";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext.js";
 
 export default RecipesScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");

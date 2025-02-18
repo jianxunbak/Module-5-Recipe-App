@@ -20,8 +20,8 @@ import AddRecipeScreen from "./screens/AddRecipeScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import RecipeCardScreen from "./screens/RecipeCardScreen";
 import CameraScreen from "./screens/CameraScreen";
-import { IsLoadingAndEditingProvider } from "./Context/isLoadingandEditingContext.js";
 import EditRecipeScreen from "./screens/EditRecipeScreen.js";
+import { IsLoadingAndEditingProvider } from "./Context/IsLoadingAndEditingContext";
 //Tab Navigator
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
@@ -130,57 +130,6 @@ const AuthStackNavigator = () => {
 };
 
 export default function App() {
-  // const Tab = createBottomTabNavigator();
-  // const Stack = createStackNavigator();
-
-  // const TabNavigator = () => {
-  //   return (
-  //     <Tab.Navigator>
-  //       <Tab.Screen
-  //         name="Recipe"
-  //         component={Recipe}
-  //         options={{
-  //           title: "recipe",
-  //           tabBarIcon: ({ color, size }) => {
-  //             return (
-  //               <MaterialCommunityIcons
-  //                 name="food-variant"
-  //                 size={size}
-  //                 color={color}
-  //               />
-  //             );
-  //           },
-  //           headerShown: false,
-  //         }}
-  //       />
-  //       <Tab.Screen
-  //         name="Add Recipe"
-  //         component={AddRecipe}
-  //         options={{
-  //           title: "Add Recipe",
-  //           tabBarIcon: ({ size, color }) => {
-  //             return (
-  //               <Ionicons name="add-circle-sharp" size={size} color={color} />
-  //             );
-  //           },
-  //           headerShown: false,
-  //         }}
-  //       />
-  //     </Tab.Navigator>
-  //   );
-  // };
-
-  // const StackNavigator = () => {
-  //   return (
-  //     <Stack.Navigator>
-  //       <Stack.Screen
-  //         name="TabNavigator"
-  //         component={TabNavigator}
-  //         options={{ headerShown: false }}
-  //       />
-  //     </Stack.Navigator>
-  //   );
-  // };
   return (
     <PaperProvider>
       <UserProvider>
@@ -195,12 +144,3 @@ export default function App() {
     </PaperProvider>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });

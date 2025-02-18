@@ -4,7 +4,7 @@ import { useUser } from "../Context/UserContext"; // Import the user context
 
 import { Button } from "react-native-paper";
 import { styles } from "../styles/styles";
-import { useIsLoadingAndEditing } from "../Context/isLoadingandEditingContext";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 
 const HomeScreen = ({ navigation }) => {
   const { user, setUser } = useUser(); // Access user context
