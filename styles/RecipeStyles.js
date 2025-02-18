@@ -64,6 +64,10 @@ const RecipeStyles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
   },
+  loading: {
+    marginLeft: 20,
+    height: 20,
+  },
 });
 
 export default RecipeStyles;

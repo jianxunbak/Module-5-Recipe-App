@@ -58,6 +58,26 @@ const RecipeStyles = StyleSheet.create({
   listDescription: {
     textAlign: "justify",
   },
+  button: {
+    height: 30,
+    width: 50,
+    backgroundColor: "#694f8f",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    marginBottom: 50,
+    flexDirection: "row",
+    paddingLeft: 20,
+    paddingRight: 20,
+    gap: 10,
+  },
+  buttonText: {
+    color: "white",
+    alignItems: "center",
+    fontSize: 15,
+  },
 });
 
 export default RecipeStyles;

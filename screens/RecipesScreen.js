@@ -8,31 +8,39 @@ import {
 } from "react-native";
 import RecipeStyles from "../styles/RecipeStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import recipeApi from "../api/recipeApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useIsLoadingAndEditing } from "../Context/isLoadingandEditingContext";
 
 export default RecipesScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
   const [allRecipes, setAllRecipes] = useState([]);
   const navigate = useNavigation();
+  const { isLoading, setIsLoading, isEditing, setIsEditing } =
+    useIsLoadingAndEditing();
 
   // API to get all the recipes
   const getAllRecipes = async () => {
+    setIsLoading(true);
     try {
       const response = await recipeApi.get("/recipe");
       setAllRecipes(response.data);
     } catch (error) {
       console.error("Error getting recipes:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    getAllRecipes();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getAllRecipes();
+    }, [])
+  );
 
   const cuisines = [
     ...new Set(
@@ -57,7 +65,7 @@ export default RecipesScreen = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Text style={RecipeStyles.MainTitle}>Recipes</Text>
       <TextInput
         style={RecipeStyles.searchBar}
@@ -78,59 +86,62 @@ export default RecipesScreen = () => {
         }}
         placeholder={{ label: "Select Cuisine", value: "" }}
       />
-
-      <ScrollView style={RecipeStyles.scrollView}>
-        {filteredRecipes.length > 0 ? (
-          filteredRecipes.map((selectedRecipe, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                handleNavigate(selectedRecipe);
-              }}
-            >
-              <View style={RecipeStyles.MainContainer}>
-                <View style={RecipeStyles.leftContainer}>
-                  <View style={RecipeStyles.titleContainer}>
-                    <Text style={RecipeStyles.title}>
-                      {selectedRecipe.title.toUpperCase()}
-                    </Text>
-                    <Text style={RecipeStyles.description}>
-                      {selectedRecipe.description}
-                    </Text>
-                  </View>
-                  <View style={RecipeStyles.bottomContainer}>
-                    <Text style={RecipeStyles.cusine}>
-                      - {selectedRecipe.cuisine}
-                    </Text>
-                    <TouchableOpacity>
-                      {/* {favorites.includes(selectedRecipe.id) ? ( */}
-                      <FontAwesome
-                        name="heart"
-                        size={25}
-                        color={"purple"}
-                      ></FontAwesome>
-                      {/* ) : (
+      {isLoading ? (
+        <Text style={RecipeStyles.loading}>Fetching Recipes...</Text>
+      ) : (
+        <ScrollView>
+          {filteredRecipes.length > 0 ? (
+            filteredRecipes.map((selectedRecipe, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  handleNavigate(selectedRecipe);
+                }}
+              >
+                <View style={RecipeStyles.MainContainer}>
+                  <View style={RecipeStyles.leftContainer}>
+                    <View style={RecipeStyles.titleContainer}>
+                      <Text style={RecipeStyles.title}>
+                        {selectedRecipe.title.toUpperCase()}
+                      </Text>
+                      <Text style={RecipeStyles.description}>
+                        {selectedRecipe.description}
+                      </Text>
+                    </View>
+                    <View style={RecipeStyles.bottomContainer}>
+                      <Text style={RecipeStyles.cusine}>
+                        - {selectedRecipe.cuisine}
+                      </Text>
+                      <TouchableOpacity>
+                        {/* {favorites.includes(selectedRecipe.id) ? ( */}
+                        <FontAwesome
+                          name="heart"
+                          size={25}
+                          color={"purple"}
+                        ></FontAwesome>
+                        {/* ) : (
                       <FontAwesome
                         name="heart-o"
                         size={25}
                         color={"purple"}
                       ></FontAwesome>
                     )} */}
-                    </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
 
-                <Image
-                  source={{ uri: selectedRecipe.imgSrc }}
-                  style={RecipeStyles.image}
-                />
-              </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <Text style={RecipeStyles.noResults}>No recipes found</Text>
-        )}
-      </ScrollView>
+                  <Image
+                    source={{ uri: selectedRecipe.imgSrc }}
+                    style={RecipeStyles.image}
+                  />
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text style={RecipeStyles.noResults}>No recipes found</Text>
+          )}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

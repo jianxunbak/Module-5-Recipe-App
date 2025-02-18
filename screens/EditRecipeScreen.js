@@ -7,13 +7,26 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddRecipeStyles from "../styles/AddRecipeStyles";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { RecipeValidationContext } from "../Context/RecipeValidationContext";
 import recipeApi from "../api/recipeApi";
 
-export default AddRecipe = () => {
+export default EditRecipe = ({ route }) => {
   const navigate = useNavigation();
+  const { selectedRecipe } = route.params;
+  console.log(selectedRecipe);
+  useEffect(() => {
+    if (selectedRecipe) {
+      setRecipe({
+        imgSrc: selectedRecipe.imgSrc || "",
+        title: selectedRecipe.title || "",
+        description: selectedRecipe.description || "",
+        ingredients: selectedRecipe.ingredients || [""],
+        steps: selectedRecipe.steps || [""],
+      });
+    }
+  }, [selectedRecipe]);
 
   const {
     validateRealTimeField,
@@ -74,12 +87,10 @@ export default AddRecipe = () => {
       ingredients: [""],
       steps: [""],
     });
-    navigate.navigate("Recipes", { screen: "All Recipes" });
+    navigate.navigate("All Recipes");
   };
 
   const handleInput = (name, value, index = null) => {
-    // if (!value) return; // Avoid processing empty values
-
     // update the newRecipe state
     setRecipe((prevRecipe) => {
       let updatedRecipe = { ...prevRecipe };
@@ -108,7 +119,7 @@ export default AddRecipe = () => {
     validateRealTimeField(name, value, index, recipe);
   };
 
-  const handleAddRecipe = async () => {
+  const handleEditRecipe = async () => {
     const valid = validationOnSubmit(recipe);
     if (!valid) {
       // setIsLoading(false);
@@ -117,16 +128,19 @@ export default AddRecipe = () => {
     }
     try {
       // setIsLoading(true);
-      const response = await recipeApi.post("/recipe", recipe);
-      if (response.status === 201) {
+      const response = await recipeApi.put(
+        `/recipe/${selectedRecipe.id}`,
+        recipe
+      );
+      if (response.status === 200) {
         alert(
           `item added:\nTitle: ${recipe.title}\nDescription: ${recipe.description}\nIngredients: ${recipe.ingredients}\nRecipe: ${recipe.steps}`
         );
-        navigate.navigate("Recipes", { screen: "All Recipes" });
+        navigate.navigate("All Recipes");
       }
     } catch (error) {
-      console.error("Error adding recipe:", error);
-      alert("Error adding recipe:", error);
+      console.error("Error editing recipe:", error);
+      alert("Error editing recipe:", error);
     } finally {
       setRecipe({
         imgSrc: "",
@@ -141,7 +155,7 @@ export default AddRecipe = () => {
   return (
     <SafeAreaView>
       <ScrollView style={AddRecipeStyles.scrollView}>
-        <Text style={AddRecipeStyles.title}>Add Recipe</Text>
+        <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
 
         <View style={AddRecipeStyles.MainContainer}>
           <Text style={AddRecipeStyles.subTitle}>Recipe Details</Text>
@@ -303,9 +317,9 @@ export default AddRecipe = () => {
         <View style={AddRecipeStyles.buttons}>
           <TouchableOpacity
             style={AddRecipeStyles.button}
-            onPress={() => handleAddRecipe()}
+            onPress={() => handleEditRecipe()}
           >
-            <Text style={AddRecipeStyles.buttonText}>Add</Text>
+            <Text style={AddRecipeStyles.buttonText}>Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={AddRecipeStyles.button}
