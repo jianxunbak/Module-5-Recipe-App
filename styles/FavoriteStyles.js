@@ -1,16 +1,7 @@
 import { Dimensions, StyleSheet } from "react-native";
 const { height, width } = Dimensions.get("window");
 
-const RecipeStyles = StyleSheet.create({
-  searchBar: {
-    height: 40,
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    marginLeft: 20,
-    marginRight: 20,
-    backgroundColor: "#CBC3E3",
-  },
-
+const FavoriteStyle = StyleSheet.create({
   MainTitle: {
     paddingLeft: 20,
     paddingRight: 20,
@@ -69,5 +60,4 @@ const RecipeStyles = StyleSheet.create({
     height: 20,
   },
 });
-
-export default RecipeStyles;
+export default FavoriteStyle;

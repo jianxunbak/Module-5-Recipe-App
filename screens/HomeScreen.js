@@ -1,10 +1,10 @@
 import React from "react";
 import { Image, View, Text } from "react-native";
-import { useUser } from "../context/UserContext"; // Import the user context
-import { useIsLoadingAndEditing } from "../context/IsLoadingAndEditingContext"; // Import the loading/editing context
+import { useUser } from "../Context/UserContext"; // Import the user context
 
 import { Button } from "react-native-paper";
 import { styles } from "../styles/styles";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 
 const HomeScreen = ({ navigation }) => {
   const { user, setUser } = useUser(); // Access user context
@@ -19,8 +19,8 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleViewRecipes = () => {
-    // Navigate to the Recipe List Screen
-    navigation.navigate("Recipe");
+    // Navigate to the Recipe List Screen (you would create this screen next)
+    navigation.navigate("Recipes", { screen: "All Recipes" });
   };
 
   return (
