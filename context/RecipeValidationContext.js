@@ -16,7 +16,9 @@ export function RecipeValidationProvider({ children }) {
     imgSrc: Joi.string()
       .uri()
       .message("Please insert a valid URL")
-      .regex(/\.(jpg|jpeg|png|gif|bmp|webp)$/i)
+      .pattern(
+        /^(https?:\/\/.*\.(jpg|jpeg|png|gif|bmp|webp)|file:\/\/.+|data:image\/[a-zA-Z]+;base64,)/i
+      )
       .message("Invalid image URL")
       .required(),
     title: Joi.string()
