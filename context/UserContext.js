@@ -5,7 +5,14 @@ const UserContext = createContext();
 
 // Provider Component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Example user state (null when not logged in)
+  const [user, setUser] = useState({
+    username: "Faizal | SE8",
+    id: "joyful_avocado_99353",
+    email: "faizal@example.com",
+    memberSince: "19 Aug 2024",
+    about: "Software Engineer | Tech Enthusiast",
+    profilePic: "https://via.placeholder.com/100",
+  }); // Example user state (null when not logged in)
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
