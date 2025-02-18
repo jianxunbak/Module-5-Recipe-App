@@ -46,6 +46,31 @@ const CameraStyle = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
+
+  imageContainer: {
+    marginTop: 30,
+    alignItems: "center",
+  },
+  selectedImage: {
+    width: width - 40,
+    height: width - 40,
+    borderRadius: 10,
+    backgroundColor: "#f0f0f0",
+  },
+  photoButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  photoButtonInner: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "white",
+  },
 });
 
 export default CameraStyle;

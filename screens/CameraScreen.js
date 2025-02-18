@@ -1,15 +1,23 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
-import { useRef, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import CameraStyle from "../styles/CameraStyles";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
 
-export default CameraScreen = () => {
+export default CameraScreen = ({ route }) => {
   const [facing, setFacing] = useState("back");
   const [permission, requestPermission] = useCameraPermissions();
+  const [selectedImage, setSelectedImage] = useState(null);
   const cameraRef = useRef(null);
+  const { navigate } = useNavigation();
+  const { returnTo } = route.params || {};
+  useEffect(() => {
+    console.log(returnTo);
+  }, []);
 
   if (!permission) {
     return;
@@ -46,6 +54,38 @@ export default CameraScreen = () => {
       }
     }
   };
+
+  const imagePicker = async () => {
+    try {
+      const results = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ["images", "videos"],
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+      if (!results.canceled) {
+        const selectedImageUri = results.assets[0].uri;
+        console.log("print in camera screen");
+        console.log(selectedImageUri);
+        setSelectedImage(results.assets[0].uri);
+        if (returnTo === "addRecipe") {
+          navigate("Home", {
+            screen: "addRecipe",
+            params: { photo: selectedImageUri },
+          });
+        } else if (returnTo === "editRecipe") {
+          navigate("Edit Recipes", {
+            photo: selectedImageUri,
+          });
+        } else {
+          console.log("nowhere to return to");
+        }
+      }
+    } catch (error) {
+      alert("failed to pick image");
+      console.log("Error picking image: ", error);
+    }
+  };
   return (
     <View style={CameraStyle.container}>
       <CameraView
@@ -55,7 +95,11 @@ export default CameraScreen = () => {
         photo={true}
       ></CameraView>
       <View style={CameraStyle.cameraContainer}>
-        <TouchableOpacity onPress={toggleCameraFacing}>
+        <TouchableOpacity
+          onPress={() => {
+            imagePicker();
+          }}
+        >
           <MaterialIcons name="flip-camera-android" size={50} color={"white"} />
           {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
         </TouchableOpacity>

@@ -14,27 +14,30 @@ import recipeApi from "../api/recipeApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext.js";
+import { recipeContext } from "../Context/RecipeContext.js";
+import { favoriteContext } from "../Context/FavouritesContext.js";
 
 export default RecipesScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("");
-  const [allRecipes, setAllRecipes] = useState([]);
   const navigate = useNavigation();
   const { isLoading, setIsLoading, isEditing, setIsEditing } =
     useIsLoadingAndEditing();
-
+  const { allRecipes, setAllRecipes, getAllRecipes } =
+    useContext(recipeContext);
+  const { favorites, toggleFavorite } = useContext(favoriteContext);
   // API to get all the recipes
-  const getAllRecipes = async () => {
-    setIsLoading(true);
-    try {
-      const response = await recipeApi.get("/recipe");
-      setAllRecipes(response.data);
-    } catch (error) {
-      console.error("Error getting recipes:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const getAllRecipes = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await recipeApi.get("/recipe");
+  //     setAllRecipes(response.data);
+  //   } catch (error) {
+  //     console.error("Error getting recipes:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   useFocusEffect(
     useCallback(() => {
@@ -112,20 +115,22 @@ export default RecipesScreen = () => {
                       <Text style={RecipeStyles.cusine}>
                         - {selectedRecipe.cuisine}
                       </Text>
-                      <TouchableOpacity>
-                        {/* {favorites.includes(selectedRecipe.id) ? ( */}
-                        <FontAwesome
-                          name="heart"
-                          size={25}
-                          color={"purple"}
-                        ></FontAwesome>
-                        {/* ) : (
-                      <FontAwesome
-                        name="heart-o"
-                        size={25}
-                        color={"purple"}
-                      ></FontAwesome>
-                    )} */}
+                      <TouchableOpacity
+                        onPress={() => toggleFavorite(selectedRecipe.id)}
+                      >
+                        {favorites.includes(selectedRecipe.id) ? (
+                          <FontAwesome
+                            name="heart"
+                            size={25}
+                            color={"purple"}
+                          ></FontAwesome>
+                        ) : (
+                          <FontAwesome
+                            name="heart-o"
+                            size={25}
+                            color={"purple"}
+                          ></FontAwesome>
+                        )}
                       </TouchableOpacity>
                     </View>
                   </View>

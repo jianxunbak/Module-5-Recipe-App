@@ -22,6 +22,9 @@ import RecipeCardScreen from "./screens/RecipeCardScreen";
 import CameraScreen from "./screens/CameraScreen";
 import EditRecipeScreen from "./screens/EditRecipeScreen.js";
 import { IsLoadingAndEditingProvider } from "./Context/IsLoadingAndEditingContext";
+import { RecipeProvider } from "./Context/RecipeContext";
+import { FavoriteProvider } from "./Context/FavouritesContext.js";
+
 //Tab Navigator
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
@@ -61,7 +64,7 @@ const TabNavigator = () => {
           },
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="camera screen"
         component={CameraScreen}
         options={{
@@ -76,7 +79,7 @@ const TabNavigator = () => {
             );
           },
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 };
@@ -105,6 +108,7 @@ const RecipeStackNavigator = () => (
     <RecipeStack.Screen name="All Recipes" component={RecipesScreen} />
     <RecipeStack.Screen name="Recipe card" component={RecipeCardScreen} />
     <RecipeStack.Screen name="Edit Recipes" component={EditRecipeScreen} />
+    <RecipeStack.Screen name="Camera" component={CameraScreen} />
   </RecipeStack.Navigator>
 );
 
@@ -134,11 +138,15 @@ export default function App() {
     <PaperProvider>
       <UserProvider>
         <IsLoadingAndEditingProvider>
-          <RecipeValidationProvider>
-            <NavigationContainer>
-              <DrawerNavigator />
-            </NavigationContainer>
-          </RecipeValidationProvider>
+          <FavoriteProvider>
+            <RecipeProvider>
+              <RecipeValidationProvider>
+                <NavigationContainer>
+                  <DrawerNavigator />
+                </NavigationContainer>
+              </RecipeValidationProvider>
+            </RecipeProvider>
+          </FavoriteProvider>
         </IsLoadingAndEditingProvider>
       </UserProvider>
     </PaperProvider>
