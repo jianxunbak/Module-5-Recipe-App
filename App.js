@@ -1,4 +1,9 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  createDrawerNavigator,
+  DrawerItem,
+  DrawerContentScrollView,
+  DrawerItemList,
+} from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -70,8 +75,51 @@ const TabNavigator = () => {
 
 //Drawer Navigator
 const Drawer = createDrawerNavigator();
+
+function CustomDrawerContent({ navigation }) {
+  const { setUser } = useUser();
+  return (
+    <DrawerContentScrollView>
+      <DrawerItem
+        label="Home"
+        icon={() => <FontAwesome name="home" size={24} color={"purple"} />}
+        onPress={() => navigation.navigate("Home")} // Navigate to Home screen
+        inactiveTintColor="purple"
+        activeTintColor="grey"
+      />
+      <DrawerItem
+        label="Favourites"
+        icon={() => <FontAwesome name="star" size={24} color={"purple"} />}
+        onPress={() => navigation.navigate("Favourites")} // Navigate to Favourites screen
+        inactiveTintColor="purple"
+        activeTintColor="grey"
+      />
+      <DrawerItem
+        label="Profile"
+        icon={() => <FontAwesome name="user" size={24} color={"purple"} />}
+        onPress={() => navigation.navigate("Profile")} // Navigate to Profile screen
+        inactiveTintColor="purple"
+        activeTintColor="grey"
+      />
+      <DrawerItem
+        label="Logout"
+        icon={() => <FontAwesome name="sign-out" size={24} color={"purple"} />}
+        onPress={() => {
+          // Handle Logout functionality
+          console.log("Logging out...");
+          setUser(null);
+          navigation.navigate("Home");
+        }}
+        inactiveTintColor="purple"
+        activeTintColor="grey"
+      />
+    </DrawerContentScrollView>
+  );
+}
 const DrawerNavigator = () => (
-  <Drawer.Navigator>
+  <Drawer.Navigator
+    drawerContent={(props) => <CustomDrawerContent {...props} />}
+  >
     <Drawer.Screen name="Home" component={TabNavigator} />
     <Drawer.Screen name="Favourites" component={FavouritesScreen} />
     <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
@@ -107,7 +155,11 @@ const AuthStackNavigator = () => {
       <AuthStack.Screen name="Home" component={HomeScreen} />
       <AuthStack.Screen name="Login" component={LoginScreen} />
       <AuthStack.Screen name="SignUp" component={SignUpScreen} />
-      <AuthStack.Screen name="Recipe" component={DrawerSignedOutNavigator} />
+      <AuthStack.Screen
+        name="Recipe"
+        component={DrawerSignedOutNavigator}
+        options={{ headerShown: false }}
+      />
     </AuthStack.Navigator>
   );
 };
