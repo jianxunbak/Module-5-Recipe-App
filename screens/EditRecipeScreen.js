@@ -11,7 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { RecipeValidationContext } from "../Context/RecipeValidationContext";
 import recipeApi from "../api/recipeApi";
-import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext";
 import Feather from "@expo/vector-icons/Feather";
 import { recipeContext } from "../Context/RecipeContext";
 

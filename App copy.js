@@ -73,6 +73,7 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => (
   <Drawer.Navigator>
     <Drawer.Screen name="Home" component={TabNavigator} />
+    <Drawer.Screen name="Add Recipe" component={AddRecipeScreen} />
     <Drawer.Screen name="Favourites" component={FavouritesScreen} />
     <Drawer.Screen name="Profile" component={ProfileStackNavigator} />
   </Drawer.Navigator>
@@ -130,9 +131,7 @@ function AppNavigator() {
 
 const RecipeStack = createStackNavigator();
 const RecipeStackNavigator = () => (
-  <RecipeStack.Navigator
-    screenOptions={{ headerTransparent: true, headerShown: false }}
-  >
+  <RecipeStack.Navigator screenOptions={{ headerTransparent: true }}>
     <RecipeStack.Screen name="All Recipes" component={RecipesScreen} />
     <RecipeStack.Screen name="Recipe card" component={RecipeCardScreen} />
     <RecipeStack.Screen name="Edit Recipes" component={EditRecipeScreen} />
