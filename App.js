@@ -38,7 +38,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen
         name="Home"
-        component={AuthStackNavigator}
+        component={RecipesScreen}
         options={{
           title: "Home Page",
           tabBarIcon: ({ color, size }) => {
@@ -117,6 +117,18 @@ const AuthStackNavigator = () => {
   const { user } = useUser(); // Check if user is logged in
   const AuthStack = createStackNavigator(); // Define the StackNavigator here
 
+const ProfileStackNavigator = () => (
+  <ProfileStack.Navigator
+    screenOptions={{ headerTransparent: true, headerShown: false }}
+  >
+    <ProfileStack.Screen name="Profile" component={ProfileScreen} />
+    <ProfileStack.Screen name="Favourites" component={FavouritesScreen} />
+  </ProfileStack.Navigator>
+);
+
+const AuthStack = createStackNavigator();
+
+const AuthStackNavigator = () => {
   return (
     <AuthStack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
@@ -132,6 +144,22 @@ const AuthStackNavigator = () => {
     </AuthStack.Navigator>
   );
 };
+
+function AppNavigator() {
+  const { user } = useUser(); // Now this can access user from context
+
+  return (
+    <>
+      {user ? (
+        // If user is logged in, show the DrawerNavigator
+        <DrawerNavigator />
+      ) : (
+        // If user is not logged in, show the AuthStackNavigator
+        <AuthStackNavigator />
+      )}
+    </>
+  );
+}
 
 export default function App() {
   return (
