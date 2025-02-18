@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 import { RecipeValidationContext } from "../Context/RecipeValidationContext";
 import recipeApi from "../api/recipeApi";
 import Feather from "@expo/vector-icons/Feather";
-import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext";
 import { recipeContext } from "../Context/RecipeContext";
 
 export default AddRecipe = ({ route }) => {
@@ -78,7 +78,7 @@ export default AddRecipe = ({ route }) => {
       ingredients: [""],
       steps: [""],
     });
-    navigate("Recipes", { screen: "All Recipes" });
+    navigate("Home", { screen: "All Recipes" });
   };
 
   const handleInput = (name, value, index = null) => {

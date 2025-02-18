@@ -13,7 +13,7 @@ import RNPickerSelect from "react-native-picker-select";
 import recipeApi from "../api/recipeApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext.js";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext.js";
 import { recipeContext } from "../Context/RecipeContext.js";
 import { favoriteContext } from "../Context/FavouritesContext.js";
 

@@ -5,11 +5,11 @@ import { useUser } from "../Context/UserContext"; // Import user context
 
 import { TextInput, Button, Text, ActivityIndicator } from "react-native-paper";
 import { styles } from "../styles/styles";
-import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext";
 
 const LoginScreen = ({ navigation }) => {
   const { setUser } = useUser(); // Get setUser from UserContext
-  const { setIsLoading } = useIsLoadingAndEditing; // Get loading state
+  const { setIsLoading } = useIsLoadingAndEditing(); // Get loading state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
