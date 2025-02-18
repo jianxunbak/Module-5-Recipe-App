@@ -3,7 +3,6 @@ import {
   Image,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -11,10 +10,14 @@ import RecipeCardStyles from "../styles/RecipeCardStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import recipeApi from "../api/recipeApi";
+import { favoriteContext } from "../Context/FavouritesContext";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useContext } from "react";
 
 export default RecipeCardScreen = ({ route }) => {
   const { selectedRecipe } = route.params;
   const navigate = useNavigation();
+  const { favorites, toggleFavorite } = useContext(favoriteContext);
 
   const handleEditRecipe = () => {
     navigate.navigate("Edit Recipes", { selectedRecipe: selectedRecipe });
@@ -55,8 +58,6 @@ export default RecipeCardScreen = ({ route }) => {
       ]
     );
   };
-
-  const handleFav = () => {};
 
   return (
     <SafeAreaView>
@@ -111,15 +112,24 @@ export default RecipeCardScreen = ({ route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={RecipeCardStyles.button}
-            onPress={() => handleFav()}
-          >
-            <Text style={RecipeCardStyles.buttonText}>Fav</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={RecipeCardStyles.button}
             onPress={() => handleDelete()}
           >
             <Text style={RecipeCardStyles.buttonText}>Delete</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => toggleFavorite(selectedRecipe.id)}>
+            {favorites.includes(selectedRecipe.id) ? (
+              <FontAwesome
+                name="heart"
+                size={25}
+                color={"purple"}
+              ></FontAwesome>
+            ) : (
+              <FontAwesome
+                name="heart-o"
+                size={25}
+                color={"purple"}
+              ></FontAwesome>
+            )}
           </TouchableOpacity>
         </View>
       </ScrollView>
