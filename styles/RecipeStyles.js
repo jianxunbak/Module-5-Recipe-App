@@ -6,14 +6,28 @@ const RecipeStyles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     paddingHorizontal: 10,
+    marginTop: 20,
     marginLeft: 20,
     marginRight: 20,
     backgroundColor: "#CBC3E3",
   },
-
+  picker: {
+    height: 40,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    marginTop: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 20,
+    backgroundColor: "#CBC3E3",
+    justifyContent: "center",
+  },
+  SafeAreaView: {
+    flex: 1,
+    marginTop: 60,
+  },
   MainTitle: {
     paddingLeft: 20,
-    paddingRight: 20,
     fontSize: 30,
     fontWeight: "bold",
     color: "black",
@@ -64,9 +78,11 @@ const RecipeStyles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
   },
-  loading: {
+  text: {
+    textAlign: "center",
     marginLeft: 20,
     height: 20,
+    marginBottom: 20,
   },
 });
 

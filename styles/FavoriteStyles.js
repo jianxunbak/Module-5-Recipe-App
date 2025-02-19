@@ -4,10 +4,26 @@ const { height, width } = Dimensions.get("window");
 const FavoriteStyle = StyleSheet.create({
   MainTitle: {
     paddingLeft: 20,
-    paddingRight: 20,
     fontSize: 30,
     fontWeight: "bold",
     color: "black",
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    gap: 20,
+  },
+  backArrow: {
+    marginTop: 10,
+    marginLeft: 20,
+  },
+  SafeAreaView: {
+    flex: 1,
+    marginTop: 115,
+  },
+  scrollView: {
+    flexGrow: 1,
   },
   MainContainer: {
     width: width - 40,

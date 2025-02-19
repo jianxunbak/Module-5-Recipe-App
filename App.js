@@ -2,18 +2,24 @@ import {
   createDrawerNavigator,
   DrawerItem,
   DrawerContentScrollView,
-  DrawerItemList,
 } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { Provider as PaperProvider } from "react-native-paper";
+
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 import { UserProvider, useUser } from "./Context/UserContext.js";
 import { RecipeValidationProvider } from "./Context/RecipeValidationContext.js";
-
-import { Provider as PaperProvider } from "react-native-paper";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { LoginProvider, useLogin } from "./Context/LoginContext.js";
+import { IsLoadingAndEditingProvider } from "./Context/IsLoadingAndEditingContext.js";
+import { RecipeProvider } from "./Context/RecipeContext.js";
+import { FavoriteProvider } from "./Context/FavouritesContext.js";
 
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
@@ -25,33 +31,7 @@ import SignUpScreen from "./screens/SignUpScreen";
 import RecipeCardScreen from "./screens/RecipeCardScreen";
 import CameraScreen from "./screens/CameraScreen";
 import EditRecipeScreen from "./screens/EditRecipeScreen.js";
-import { IsLoadingAndEditingProvider } from "./Context/IsLoadingandEditingContext.js";
-import { RecipeProvider } from "./Context/RecipeContext.js";
-import { FavoriteProvider } from "./Context/FavouritesContext.js";
 import EditProfileScreen from "./screens/EditProfileScreen.js";
-import { LoginProvider, useLogin } from "./Context/LoginContext.js";
-
-// Auth Stack Navigator
-const AuthStackNavigator = () => {
-  const { login } = useLogin(); // Check if user is logged in
-  const AuthStack = createStackNavigator(); // Define the StackNavigator here
-
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      {login ? (
-        <AuthStack.Screen name="Recipes" component={DrawerNavigator} />
-      ) : (
-        <>
-          <AuthStack.Screen name="Home" component={HomeScreen} />
-          <AuthStack.Screen name="Login" component={LoginScreen} />
-          <AuthStack.Screen name="Recipe card" component={RecipeCardScreen} />
-          <AuthStack.Screen name="SignUp" component={SignUpScreen} />
-        </>
-      )}
-    </AuthStack.Navigator>
-  );
-};
-
 //Tab Navigator
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
@@ -64,8 +44,8 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="AuthStackNavigator"
-        component={AuthStackNavigator}
+        name="HomePage"
+        component={HomeScreen}
         options={{
           title: "Home Page",
           tabBarIcon: ({ color, size }) => {
@@ -76,21 +56,50 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="addRecipe"
-        component={AddRecipeScreen}
+        name="All Recipes"
+        component={RecipesScreen}
         options={{
-          title: "Add recipe",
+          title: "All Recipes",
           tabBarIcon: ({ color, size }) => {
             return (
-              <Ionicons
-                name="add-circle-sharp"
+              <FontAwesome6
+                name="bowl-food"
                 size={size}
                 color={color}
-              ></Ionicons>
+              ></FontAwesome6>
             );
           },
         }}
       />
+      <Tab.Screen
+        name="addRecipe"
+        component={RecipeStackNavigator}
+        options={{
+          headerShown: false,
+          title: "Add recipe",
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <Ionicons name="add-circle" size={size} color={color}></Ionicons>
+            );
+          },
+        }}
+      />
+      {/* <Tab.Screen
+        name="Favorites"
+        component={FavouritesScreen}
+        options={{
+          title: "Favorites",
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <MaterialIcons
+                name="favorite"
+                size={size}
+                color={color}
+              ></MaterialIcons>
+            );
+          },
+        }}
+      /> */}
     </Tab.Navigator>
   );
 };
@@ -105,7 +114,7 @@ function CustomDrawerContent({ navigation }) {
       <DrawerItem
         label="Home"
         icon={() => <FontAwesome name="home" size={24} color={"purple"} />}
-        onPress={() => navigation.navigate("Home")} // Navigate to Home screen
+        onPress={() => navigation.navigate("Home", { screen: "HomePage" })} // Navigate to Home screen
         inactiveTintColor="purple"
         activeTintColor="grey"
       />
@@ -142,85 +151,116 @@ const DrawerNavigator = () => (
   <Drawer.Navigator
     drawerContent={(props) => <CustomDrawerContent {...props} />}
   >
-    <Drawer.Screen name="Home" component={TabNavigator} />
-    <Drawer.Screen name="Favourites" component={FavouritesScreen} />
-    <Drawer.Screen name="Profile" component={ProfileScreen} />
+    <Drawer.Screen
+      name="Home"
+      component={TabNavigator}
+      options={{
+        headerTransparent: true,
+        headerTitle: "",
+        drawerItemStyle: { display: "none" },
+      }}
+    />
+    <Drawer.Screen
+      name="Favourites"
+      component={FavouritesScreen}
+      options={{
+        headerTransparent: true,
+        headerTitle: "",
+      }}
+    />
+    <Drawer.Screen
+      name="Profile"
+      component={ProfileScreen}
+      options={{
+        headerTransparent: true,
+        headerTitle: "",
+      }}
+    />
     <Drawer.Screen name="editProfile" component={EditProfileScreen} />
     <Drawer.Screen
       name="Recipes"
       component={RecipeStackNavigator}
       headerShown={false}
-      options={{ drawerItemStyle: { display: "none" } }}
+      options={{
+        drawerItemStyle: { display: "none" },
+        headerTitle: "",
+        headerTransparent: true,
+      }}
     />
   </Drawer.Navigator>
 );
 
-const DrawerSignedOut = createDrawerNavigator();
-
-const DrawerSignedOutNavigator = () => (
-  <DrawerSignedOut.Navigator>
-    <DrawerSignedOut.Screen name="Home" component={RecipesScreen} />
-    <DrawerSignedOut.Screen name="Login" component={LoginScreen} />
-    <DrawerSignedOut.Screen name="SignUp" component={SignUpScreen} />
-  </DrawerSignedOut.Navigator>
-);
-
-const ProfileStack = createStackNavigator();
-
-const ProfileStackNavigator = () => (
-  <ProfileStack.Navigator
-    screenOptions={{ headerTransparent: true, headerShown: false }}
-  >
-    <ProfileStack.Screen name="Profile" component={ProfileScreen} />
-    <ProfileStack.Screen name="Favourites" component={FavouritesScreen} />
-  </ProfileStack.Navigator>
-);
-
-const AuthStack = createStackNavigator();
-
-const AuthStackNavigator = () => {
-  return (
-    <AuthStack.Navigator screenOptions={{ headerShown: true }}>
-      <AuthStack.Screen name="Home" component={HomeScreen} />
-      <AuthStack.Screen name="Login" component={LoginScreen} />
-      <AuthStack.Screen name="SignUp" component={SignUpScreen} />
-      <AuthStack.Screen
-        name="Recipe"
-        component={DrawerSignedOutNavigator}
-        options={{ headerShown: false }}
-      />
-    </AuthStack.Navigator>
-  );
-};
-
-function AppNavigator() {
-  const { user } = useUser(); // Now this can access user from context
-
-  return (
-    <>
-      {user ? (
-        // If user is logged in, show the DrawerNavigator
-        <DrawerNavigator />
-      ) : (
-        // If user is not logged in, show the AuthStackNavigator
-        <AuthStackNavigator />
-      )}
-    </>
-  );
-}
+// const DrawerSignedOut = createDrawerNavigator();
+// const DrawerSignedOutNavigator = () => (
+//   <DrawerSignedOut.Navigator>
+//     <DrawerSignedOut.Screen name="Home" component={RecipesScreen} />
+//     <DrawerSignedOut.Screen name="Login" component={LoginScreen} />
+//     <DrawerSignedOut.Screen name="SignUp" component={SignUpScreen} />
+//   </DrawerSignedOut.Navigator>
+// );
 
 const RecipeStack = createStackNavigator();
 const RecipeStackNavigator = () => (
   <RecipeStack.Navigator
-    screenOptions={{ headerTransparent: true, headerShown: false }}
+    screenOptions={{
+      headerTransparent: true,
+      headerShown: true,
+    }}
   >
-    <RecipeStack.Screen name="All Recipes" component={RecipesScreen} />
-    <RecipeStack.Screen name="Recipe card" component={RecipeCardScreen} />
-    <RecipeStack.Screen name="Edit Recipes" component={EditRecipeScreen} />
-    <RecipeStack.Screen name="Camera" component={CameraScreen} />
+    <RecipeStack.Screen
+      name="Add Recipes"
+      component={AddRecipeScreen}
+      options={{ headerShown: false }}
+    />
+    {/* <RecipeStack.Screen name="All Recipes" component={RecipesScreen} /> */}
+    <RecipeStack.Screen
+      name="Recipe card"
+      component={RecipeCardScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RecipeStack.Screen
+      name="Edit Recipes"
+      component={EditRecipeScreen}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RecipeStack.Screen
+      name="Camera"
+      component={CameraScreen}
+      options={{
+        headerShown: true,
+        headerTitle: "",
+        headerStyle: {
+          height: 250,
+        },
+        headerTintColor: "black", // Makes sure the back button is visible
+      }}
+    />
   </RecipeStack.Navigator>
 );
 
+// Screen that will show when user is not login
+const AuthStack = createStackNavigator();
+const AuthStackNavigator = () => {
+  return (
+    <AuthStack.Navigator
+      screenOptions={{ headerTitle: "", headerTransparent: true }}
+    >
+      <AuthStack.Screen name="Home" component={HomeScreen} />
+      <AuthStack.Screen name="Login" component={LoginScreen} />
+      <AuthStack.Screen name="SignUp" component={SignUpScreen} />
+    </AuthStack.Navigator>
+  );
+};
+
+// Shows different Navigator depending  if user is login
+const AppNavigator = () => {
+  const { login } = useLogin();
+  return login ? <DrawerNavigator /> : <AuthStackNavigator />;
+};
 export default function App() {
   return (
     <PaperProvider>
@@ -231,7 +271,7 @@ export default function App() {
               <RecipeProvider>
                 <RecipeValidationProvider>
                   <NavigationContainer>
-                    <DrawerNavigator />
+                    <AppNavigator />
                   </NavigationContainer>
                 </RecipeValidationProvider>
               </RecipeProvider>

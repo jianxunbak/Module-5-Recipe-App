@@ -5,6 +5,10 @@ const profileStyles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
+  SafeAreaView: {
+    flex: 1,
+    marginTop: 115,
+  },
   MainTitle: {
     fontSize: 30,
     fontWeight: "bold",

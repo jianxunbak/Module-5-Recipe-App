@@ -11,10 +11,11 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { RecipeValidationContext } from "../Context/RecipeValidationContext";
 import recipeApi from "../api/recipeApi";
-import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import Feather from "@expo/vector-icons/Feather";
 import { recipeContext } from "../Context/RecipeContext";
 import { ActivityIndicator } from "react-native-paper";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default EditRecipe = ({ route }) => {
   const navigate = useNavigation();
@@ -154,9 +155,17 @@ export default EditRecipe = ({ route }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={AddRecipeStyles.SafeAreaView}>
       <ScrollView style={AddRecipeStyles.scrollView}>
-        <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
+        <View style={AddRecipeStyles.titleContainer}>
+          <TouchableOpacity
+            style={AddRecipeStyles.backArrow}
+            onPress={() => navigate.goBack()}
+          >
+            <Ionicons name="return-down-back" size={25} color={"black"} />
+          </TouchableOpacity>
+          <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
+        </View>
 
         {isLoading ? (
           <View>

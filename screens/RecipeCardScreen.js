@@ -116,6 +116,12 @@ export default RecipeCardScreen = ({ route }) => {
           >
             <Text style={RecipeCardStyles.buttonText}>Delete</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={RecipeCardStyles.button}
+            onPress={() => navigate.goBack()}
+          >
+            <Text style={RecipeCardStyles.buttonText}>Back</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => toggleFavorite(selectedRecipe.id)}>
             {favorites.includes(selectedRecipe.id) ? (
               <FontAwesome
