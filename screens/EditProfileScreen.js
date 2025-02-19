@@ -11,149 +11,39 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { RecipeValidationContext } from "../Context/RecipeValidationContext";
 import recipeApi from "../api/recipeApi";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import Feather from "@expo/vector-icons/Feather";
-import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext";
 import { recipeContext } from "../Context/RecipeContext";
-import { ActivityIndicator } from "react-native-paper";
 
-export default AddRecipe = ({ route }) => {
-  const { navigate } = useNavigation();
-  const { photo } = route.params || {};
-  const { validateRealTimeField, validationOnSubmit, formErrors } = useContext(
-    RecipeValidationContext
-  );
+export default EditProfile = ({ route }) => {
+  const navigate = useNavigation();
+  const { selectedRecipe, photo } = route.params;
   const { isLoading, setIsLoading, isEditing, setIsEditing } =
     useIsLoadingAndEditing();
-  const { recipeToAdd, setRecipeToAdd } = useContext(recipeContext);
-
-  useEffect(() => {
-    if (photo) {
-      setRecipeToAdd((prevRecipe) => ({
-        ...prevRecipe,
-        imgSrc: photo,
-      }));
-    }
-  }, [photo]);
-
-  const addItem = (type) => {
-    if (type === "ingredients") {
-      setRecipeToAdd((prevRecipe) => ({
-        ...prevRecipe,
-        ingredients: [...prevRecipe.ingredients, ""],
-      }));
-    } else if (type === "steps") {
-      setRecipeToAdd((prevRecipe) => ({
-        ...prevRecipe,
-        steps: [...prevRecipe.steps, ""],
-      }));
-    }
-  };
-
-  const removeItem = (type, index) => {
-    if (type === "ingredients") {
-      setRecipeToAdd((prevRecipe) => {
-        const updatedIngredients = [...prevRecipe.ingredients];
-        updatedIngredients.splice(index, 1);
-        return {
-          ...prevRecipe,
-          ingredients: updatedIngredients,
-        };
-      });
-    } else if (type === "steps") {
-      setRecipeToAdd((prevRecipe) => {
-        const updatedSteps = [...prevRecipe.steps];
-        updatedSteps.splice(index, 1);
-        return {
-          ...prevRecipe,
-          steps: updatedSteps,
-        };
-      });
-    }
-  };
 
   const handleCancel = () => {
-    setRecipeToAdd({
+    setRecipeToEdit({
       imgSrc: "",
       title: "",
       description: "",
       ingredients: [""],
       steps: [""],
     });
-    navigate("Home", { screen: "All Recipes" });
+    navigate.navigate("All Recipes");
   };
 
-  const handleInput = (name, value, index = null) => {
-    // if (!value) return; // Avoid processing empty values
+  const handleInput = () => {};
 
-    // update the newRecipe state
-    setRecipeToAdd((prevRecipe) => {
-      let updatedRecipe = { ...prevRecipe };
-
-      // Handle array fields like 'ingredients' and 'steps'
-      if (name === "ingredients" || name === "steps") {
-        const updatedArray = [...prevRecipe[name]]; // Create a copy of the array
-
-        if (index !== null) {
-          updatedArray[index] = value; // Update the specific index
-        }
-
-        updatedRecipe = {
-          ...prevRecipe,
-          [name]: updatedArray, // Update the array in state
-        };
-      } else {
-        // for nonarray fields
-        updatedRecipe = {
-          ...prevRecipe,
-          [name]: value,
-        };
-      }
-      return updatedRecipe;
-    });
-    validateRealTimeField(name, value, index, recipeToAdd);
-  };
-
-  const handleAddRecipe = async () => {
-    const valid = validationOnSubmit(recipeToAdd);
-    if (!valid) {
-      // setIsLoading(false);
-      alert("form not complete");
-      return;
-    }
-    try {
-      setIsLoading(true);
-      // setIsLoading(true);
-      const response = await recipeApi.post("/recipe", recipeToAdd);
-      if (response.status === 201) {
-        alert(
-          `item added:\nTitle: ${recipeToAdd.title}\nDescription: ${recipe.description}\nIngredients: ${recipe.ingredients}\nRecipe: ${recipe.steps}`
-        );
-        navigate("Recipes", { screen: "All Recipes" });
-      }
-    } catch (error) {
-      console.error("Error adding recipe:", error);
-      alert("Error adding recipe:", error);
-    } finally {
-      setIsLoading(false);
-      setRecipeToAdd({
-        imgSrc: "",
-        title: "",
-        description: "",
-        ingredients: [""],
-        steps: [""],
-      });
-    }
-  };
+  const handleEditProfile = () => {};
 
   return (
     <SafeAreaView>
       <ScrollView style={AddRecipeStyles.scrollView}>
-        <Text style={AddRecipeStyles.title}>Add Recipe</Text>
+        <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
 
         {isLoading ? (
           <View>
-            <Text>Adding Recipe...</Text>
-            <ActivityIndicator animating={true} color="#6200ee" />
+            <Text>Loading...</Text>
           </View>
         ) : (
           <>
@@ -163,7 +53,7 @@ export default AddRecipe = ({ route }) => {
                 <Text style={AddRecipeStyles.label}>Title:</Text>
                 <TextInput
                   style={AddRecipeStyles.textInput}
-                  value={recipeToAdd.title}
+                  value={recipeToEdit.title}
                   onChangeText={(updatedTitle) =>
                     handleInput("title", updatedTitle)
                   }
@@ -178,7 +68,7 @@ export default AddRecipe = ({ route }) => {
                 <Text style={AddRecipeStyles.label}>Description:</Text>
                 <TextInput
                   style={AddRecipeStyles.textInput}
-                  value={recipeToAdd.description}
+                  value={recipeToEdit.description}
                   onChangeText={(updatedDescription) =>
                     handleInput("description", updatedDescription)
                   }
@@ -194,7 +84,7 @@ export default AddRecipe = ({ route }) => {
                 <View style={AddRecipeStyles.inputSideButton}>
                   <TextInput
                     style={AddRecipeStyles.textInputWithButton}
-                    value={recipeToAdd.imgSrc}
+                    value={recipeToEdit.imgSrc}
                     onChangeText={(updatedImage) =>
                       handleInput("imgSrc", updatedImage)
                     }
@@ -202,9 +92,8 @@ export default AddRecipe = ({ route }) => {
                   <TouchableOpacity
                     style={AddRecipeStyles.buttonAtInput}
                     onPress={() => {
-                      navigate("Recipes", {
-                        screen: "Camera",
-                        params: { returnTo: "addRecipe" },
+                      navigate.navigate("Camera", {
+                        returnTo: "editRecipe",
                       });
                     }}
                   >
@@ -235,7 +124,7 @@ export default AddRecipe = ({ route }) => {
               </View>
 
               <View style={AddRecipeStyles.list}>
-                {recipeToAdd.ingredients.map((ingredients, index) => (
+                {recipeToEdit.ingredients.map((ingredients, index) => (
                   <View key={index} style={AddRecipeStyles.input}>
                     <Text style={AddRecipeStyles.label}>
                       Ingredient {index + 1}:
@@ -280,7 +169,7 @@ export default AddRecipe = ({ route }) => {
               </View>
 
               <View style={AddRecipeStyles.list}>
-                {recipeToAdd.steps.map((steps, index) => (
+                {recipeToEdit.steps.map((steps, index) => (
                   <View key={index} style={AddRecipeStyles.input}>
                     <Text style={AddRecipeStyles.label}>Step {index + 1}:</Text>
                     <View style={AddRecipeStyles.inputSideButton}>
@@ -312,9 +201,9 @@ export default AddRecipe = ({ route }) => {
             <View style={AddRecipeStyles.buttons}>
               <TouchableOpacity
                 style={AddRecipeStyles.button}
-                onPress={() => handleAddRecipe()}
+                onPress={() => handleEditRecipe()}
               >
-                <Text style={AddRecipeStyles.buttonText}>Add</Text>
+                <Text style={AddRecipeStyles.buttonText}>Edit</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={AddRecipeStyles.button}

@@ -14,6 +14,7 @@ import recipeApi from "../api/recipeApi";
 import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext";
 import Feather from "@expo/vector-icons/Feather";
 import { recipeContext } from "../Context/RecipeContext";
+import { ActivityIndicator } from "react-native-paper";
 
 export default EditRecipe = ({ route }) => {
   const navigate = useNavigation();
@@ -159,7 +160,8 @@ export default EditRecipe = ({ route }) => {
 
         {isLoading ? (
           <View>
-            <Text>Loading...</Text>
+            <Text>Editing Recipe...</Text>
+            <ActivityIndicator animating={true} color="#6200ee" />
           </View>
         ) : (
           <>

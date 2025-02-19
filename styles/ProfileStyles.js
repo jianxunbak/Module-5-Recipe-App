@@ -1,12 +1,15 @@
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const profileStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "grey",
-    // backgroundColor: '#1e1e1e',
     padding: 20,
-    alignItems: "center",
+  },
+  MainTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "black",
+    marginBottom: 10,
   },
   header: {
     alignItems: "center",
@@ -15,7 +18,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 100,
     height: 100,
-    borderRadius: 50,
+    borderRadius: 10,
     borderWidth: 2,
     borderColor: "#fff",
   },
@@ -33,7 +36,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   sectionTitle: {
-    color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 10,
@@ -43,6 +45,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  subContainer: {
+    marginBottom: 10,
+  },
+  button: {
+    height: 40,
+    width: 80,
+    backgroundColor: "#694f8f",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "white",
+    alignItems: "center",
+    fontSize: 20,
+  },
 });
 
-export default styles;
+export default profileStyles;

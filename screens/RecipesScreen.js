@@ -16,6 +16,7 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useIsLoadingAndEditing } from "../Context/IsLoadingandEditingContext.js";
 import { recipeContext } from "../Context/RecipeContext.js";
 import { favoriteContext } from "../Context/FavouritesContext.js";
+import { ActivityIndicator } from "react-native-paper";
 
 export default RecipesScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,19 +27,6 @@ export default RecipesScreen = () => {
   const { allRecipes, setAllRecipes, getAllRecipes } =
     useContext(recipeContext);
   const { favorites, toggleFavorite } = useContext(favoriteContext);
-  // API to get all the recipes
-  // const getAllRecipes = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await recipeApi.get("/recipe");
-  //     setAllRecipes(response.data);
-  //   } catch (error) {
-  //     console.error("Error getting recipes:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   useFocusEffect(
     useCallback(() => {
       getAllRecipes();
@@ -90,7 +78,10 @@ export default RecipesScreen = () => {
         placeholder={{ label: "Select Cuisine", value: "" }}
       />
       {isLoading ? (
-        <Text style={RecipeStyles.loading}>Fetching Recipes...</Text>
+        <View>
+          <Text style={RecipeStyles.loading}>Fetching Recipes...</Text>
+          <ActivityIndicator animating={true} color="#6200ee" />
+        </View>
       ) : (
         <ScrollView>
           {filteredRecipes.length > 0 ? (
