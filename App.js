@@ -84,22 +84,6 @@ const TabNavigator = () => {
           },
         }}
       />
-      {/* <Tab.Screen
-        name="Favorites"
-        component={FavouritesScreen}
-        options={{
-          title: "Favorites",
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <MaterialIcons
-                name="favorite"
-                size={size}
-                color={color}
-              ></MaterialIcons>
-            );
-          },
-        }}
-      /> */}
     </Tab.Navigator>
   );
 };
@@ -189,15 +173,6 @@ const DrawerNavigator = () => (
     />
   </Drawer.Navigator>
 );
-
-// const DrawerSignedOut = createDrawerNavigator();
-// const DrawerSignedOutNavigator = () => (
-//   <DrawerSignedOut.Navigator>
-//     <DrawerSignedOut.Screen name="Home" component={RecipesScreen} />
-//     <DrawerSignedOut.Screen name="Login" component={LoginScreen} />
-//     <DrawerSignedOut.Screen name="SignUp" component={SignUpScreen} />
-//   </DrawerSignedOut.Navigator>
-// );
 
 const RecipeStack = createStackNavigator();
 const RecipeStackNavigator = () => (
