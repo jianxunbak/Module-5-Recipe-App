@@ -93,6 +93,7 @@ const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }) {
   const { setUser } = useUser();
+  const { setLogin } = useLogin();
   return (
     <DrawerContentScrollView>
       <DrawerItem
@@ -122,7 +123,16 @@ function CustomDrawerContent({ navigation }) {
         onPress={() => {
           // Handle Logout functionality
           console.log("Logging out...");
-          setUser(null);
+          setLogin(false);
+          setUser({
+            username: "",
+            id: "",
+            email: "",
+            memberSince: "",
+            about: "",
+            profilePic: "",
+            password: "",
+          });
           navigation.navigate("Home");
         }}
         inactiveTintColor="purple"
