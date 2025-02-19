@@ -1,94 +1,69 @@
-// import { styles } from "../styles/styles";
 import { View, Text, Image, TextInput, Button } from "react-native";
-import styles from "../styles/ProfileStyles";
-import { useState } from "react";
+import profileStyles from "../styles/ProfileStyles";
+import { useCallback } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native";
+import { useUser } from "../Context/UserContext";
 
 const ProfileScreen = () => {
-  const defaultUser = {
-    username: "Faizal | SE8",
-    id: "joyful_avocado_99353",
-    email: "faizal@example.com",
-    memberSince: "19 Aug 2024",
-    about: "Software Engineer | Tech Enthusiast",
-    profilePic: "https://via.placeholder.com/100",
-  };
-  const [user, setUser] = useState({
-    username: defaultUser.username,
-    id: defaultUser.id,
-    email: defaultUser.email,
-    memberSince: defaultUser.memberSince,
-    about: defaultUser.about,
-    profilePic: defaultUser.profilePic,
-  });
+  const { user, setUser } = useUser();
+  const { navigate } = useNavigation();
 
-  const handleInputChange = (field, value) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      [field]: value,
-    }));
-  };
-
-  // const user = route?.params?.userData || defaultUser;
+  useFocusEffect(
+    useCallback(() => {
+      setUser({
+        username: "Faizal | SE8",
+        id: "joyful_avocado_99353",
+        email: "faizal@example.com",
+        memberSince: "19 Aug 2024",
+        about: "Software Engineer | Tech Enthusiast",
+        profilePic:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQG6U7DsIIUVQmkDyihIPWI-aBCmeLli02NQ&s",
+      });
+    }, [])
+  );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image source={{ uri: user.profilePic }} style={styles.profileImage} />
-        <TextInput
-          style={styles.usernameInput}
-          value={user.username}
-          onChangeText={(text) => handleInputChange("username", text)}
-          placeholder="Enter your username"
-        />
-        <TextInput
-          style={styles.userIdInput}
-          value={user.id}
-          onChangeText={(text) => handleInputChange("id", text)}
-          placeholder="Enter your user ID"
-        />
+    <View style={profileStyles.container}>
+      <Text style={profileStyles.MainTitle}>Profile</Text>
+      <View style={profileStyles.body}>
+        <View style={profileStyles.subContainer}>
+          <Image
+            source={{ uri: user.profilePic }}
+            style={profileStyles.profileImage}
+          />
+        </View>
+
+        <View style={profileStyles.subContainer}>
+          <Text style={profileStyles.sectionTitle}>Username</Text>
+          <Text style={profileStyles.textInput}>{user.username}</Text>
+        </View>
+
+        <View style={profileStyles.subContainer}>
+          <Text style={profileStyles.sectionTitle}>Profile ID</Text>
+          <Text style={profileStyles.textInput}>{user.id}</Text>
+        </View>
+        <View style={profileStyles.subContainer}>
+          <Text style={profileStyles.sectionTitle}>Email</Text>
+          <Text style={profileStyles.textInput}>{user.email}</Text>
+        </View>
+        <View style={profileStyles.subContainer}>
+          <Text style={profileStyles.sectionTitle}>Member Since</Text>
+          <Text style={profileStyles.textInput}>{user.memberSince}</Text>
+        </View>
+        <View style={profileStyles.subContainer}>
+          <Text style={profileStyles.sectionTitle}>About Me</Text>
+          <Text style={profileStyles.textInput}>{user.about}</Text>
+        </View>
+        <TouchableOpacity
+          style={profileStyles.button}
+          onPress={() => {
+            navigate("editProfile");
+          }}
+        >
+          <Text style={profileStyles.buttonText}>Edit</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.body}>
-        <Text style={styles.sectionTitle}>Email</Text>
-        <TextInput
-          style={styles.textInput}
-          value={user.email}
-          onChangeText={(text) => handleInputChange("email", text)}
-          placeholder="Enter your email"
-        />
-
-        <Text style={styles.sectionTitle}>Member Since</Text>
-        <TextInput
-          style={styles.textInput}
-          value={user.memberSince}
-          onChangeText={(text) => handleInputChange("memberSince", text)}
-          placeholder="Enter membership date"
-        />
-
-        <Text style={styles.sectionTitle}>About Me</Text>
-        <TextInput
-          style={styles.textInput}
-          value={user.about}
-          onChangeText={(text) => handleInputChange("about", text)}
-          placeholder="Tell us about yourself"
-        />
-
-        <Text style={styles.sectionTitle}>Profile Picture URL</Text>
-        <TextInput
-          style={styles.textInput}
-          value={user.profilePic}
-          onChangeText={(text) => handleInputChange("profilePic", text)}
-          placeholder="Enter profile picture URL"
-        />
-      </View>
-
-      {/* Optional Save Button */}
-      <Button
-        title="Save Changes"
-        onPress={() => {
-          // You can handle saving logic here
-          console.log("User data saved:", user);
-        }}
-      />
     </View>
   );
 };
