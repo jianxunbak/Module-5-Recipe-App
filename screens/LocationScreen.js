@@ -1,11 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useUser } from "../Context/UserContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, ImageBackground, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 import LocationStyles from "../styles/LocationStyles";
 import { LocationContext } from "../Context/LocationContext";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 import { recipeContext } from "../Context/RecipeContext";
 import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 
@@ -40,7 +40,7 @@ export default LocationScreen = () => {
     );
   }
   const handleNavigate = (selectedRecipe) => {
-    navigate.navigate("addRecipe", {
+    navigate.navigate("Recipes", {
       screen: "Recipe card",
       params: { selectedRecipe: selectedRecipe },
     });
@@ -74,21 +74,19 @@ export default LocationScreen = () => {
                   latitude: parseFloat(item.latitude),
                   longitude: parseFloat(item.longitude),
                 }}
-                title={item.title}
+                anchor={{ x: 0.5, y: 0.5 }} // Centers the marker properly
               >
-                <TouchableOpacity
-                  onPress={() => {
-                    handleNavigate(item);
-                  }}
-                >
-                  <View style={{ alignItems: "center" }}>
-                    <Image
-                      source={{ uri: item.imgSrc }}
-                      style={LocationStyles.mapImage}
-                      resizeMode="cover"
-                    />
-                  </View>
-                </TouchableOpacity>
+                <Image
+                  source={{ uri: item.imgSrc }}
+                  style={LocationStyles.mapImage}
+                />
+                <Callout onPress={() => handleNavigate(item)}>
+                  <Text style={LocationStyles.text}>{item.title}</Text>
+                  <Image
+                    style={LocationStyles.ImageCallout}
+                    source={{ uri: item.imgSrc }}
+                  />
+                </Callout>
               </Marker>
             );
           })}
