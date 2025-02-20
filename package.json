@@ -29,7 +29,14 @@
     "react-native-screens": "~4.4.0",
     "react-native-vector-icons": "^10.2.0",
     "expo-camera": "~16.0.16",
+<<<<<<< HEAD
     "expo-media-library": "~17.0.6"
+=======
+    "expo-media-library": "~17.0.6",
+    "expo-image-picker": "~16.0.6",
+    "expo-location": "~18.0.7",
+    "react-native-maps": "1.18.0"
+>>>>>>> jianxunbak/main
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

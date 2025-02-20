@@ -45,6 +45,9 @@ export function RecipeValidationProvider({ children }) {
       .max(200)
       .message("Each step cannot be more than 200 characters")
       .required(),
+    city: Joi.string().optional(),
+    latitude: Joi.number().optional(),
+    longitude: Joi.number().optional(),
   };
 
   const validateRealTimeField = (name, value, index = null, newRecipe) => {

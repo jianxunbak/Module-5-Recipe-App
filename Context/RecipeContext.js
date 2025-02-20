@@ -14,6 +14,9 @@ export function RecipeProvider({ children }) {
     description: "",
     ingredients: [""],
     steps: [""],
+    city: "",
+    latitude: "",
+    longitude: "",
   });
 
   const [recipeToAdd, setRecipeToAdd] = useState({
@@ -22,6 +25,9 @@ export function RecipeProvider({ children }) {
     description: "",
     ingredients: [""],
     steps: [""],
+    city: "",
+    latitude: "",
+    longitude: "",
   });
 
   const getAllRecipes = async () => {

@@ -74,12 +74,9 @@ export default CameraScreen = ({ route }) => {
         console.log(selectedImageUri);
         setSelectedImage(results.assets[0].uri);
         if (returnTo === "addRecipe") {
-          navigation("Home", {
-            screen: "addRecipe",
-            params: { photo: selectedImageUri },
-          });
+          navigate.navigate("Add Recipes", { photo: selectedImageUri });
         } else if (returnTo === "editRecipe") {
-          navigation("Edit Recipes", {
+          navigate.navigate("Edit Recipes", {
             photo: selectedImageUri,
           });
         } else {

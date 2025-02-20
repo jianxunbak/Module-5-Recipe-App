@@ -5,7 +5,7 @@ const LoginContext = createContext();
 
 // Provider Component
 export const LoginProvider = ({ children }) => {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
 
   return (
     <LoginContext.Provider value={{ login, setLogin }}>

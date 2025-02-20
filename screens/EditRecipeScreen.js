@@ -1,4 +1,6 @@
 import {
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -156,192 +158,202 @@ export default EditRecipe = ({ route }) => {
 
   return (
     <SafeAreaView style={AddRecipeStyles.SafeAreaView}>
-      <ScrollView style={AddRecipeStyles.scrollView}>
-        <View style={AddRecipeStyles.titleContainer}>
-          <TouchableOpacity
-            style={AddRecipeStyles.backArrow}
-            onPress={() => navigate.goBack()}
-          >
-            <Ionicons name="return-down-back" size={25} color={"black"} />
-          </TouchableOpacity>
-          <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
-        </View>
-
-        {isLoading ? (
-          <View>
-            <Text>Editing Recipe...</Text>
-            <ActivityIndicator animating={true} color="#6200ee" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView style={AddRecipeStyles.scrollView}>
+          <View style={AddRecipeStyles.titleContainer}>
+            <TouchableOpacity
+              style={AddRecipeStyles.backArrow}
+              onPress={() => navigate.goBack()}
+            >
+              <Ionicons name="return-down-back" size={25} color={"black"} />
+            </TouchableOpacity>
+            <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
           </View>
-        ) : (
-          <>
-            <View style={AddRecipeStyles.MainContainer}>
-              <Text style={AddRecipeStyles.subTitle}>Recipe Details</Text>
-              <View style={AddRecipeStyles.input}>
-                <Text style={AddRecipeStyles.label}>Title:</Text>
-                <TextInput
-                  style={AddRecipeStyles.textInput}
-                  value={recipeToEdit.title}
-                  onChangeText={(updatedTitle) =>
-                    handleInput("title", updatedTitle)
-                  }
-                />
-              </View>
-              {formErrors.title && (
-                <Text style={AddRecipeStyles.formError}>
-                  {String(formErrors.title)}
-                </Text>
-              )}
-              <View style={AddRecipeStyles.input}>
-                <Text style={AddRecipeStyles.label}>Description:</Text>
-                <TextInput
-                  style={AddRecipeStyles.textInput}
-                  value={recipeToEdit.description}
-                  onChangeText={(updatedDescription) =>
-                    handleInput("description", updatedDescription)
-                  }
-                />
-              </View>
-              {formErrors.description && (
-                <Text style={AddRecipeStyles.formError}>
-                  {String(formErrors.description)}
-                </Text>
-              )}
-              <View style={AddRecipeStyles.input}>
-                <Text style={AddRecipeStyles.label}>Image:</Text>
-                <View style={AddRecipeStyles.inputSideButton}>
+
+          {isLoading ? (
+            <View>
+              <Text>Editing Recipe...</Text>
+              <ActivityIndicator animating={true} color="#6200ee" />
+            </View>
+          ) : (
+            <>
+              <View style={AddRecipeStyles.MainContainer}>
+                <Text style={AddRecipeStyles.subTitle}>Recipe Details</Text>
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>Title:</Text>
                   <TextInput
-                    style={AddRecipeStyles.textInputWithButton}
-                    value={recipeToEdit.imgSrc}
-                    onChangeText={(updatedImage) =>
-                      handleInput("imgSrc", updatedImage)
+                    style={AddRecipeStyles.textInput}
+                    value={recipeToEdit.title}
+                    onChangeText={(updatedTitle) =>
+                      handleInput("title", updatedTitle)
                     }
                   />
+                </View>
+                {formErrors.title && (
+                  <Text style={AddRecipeStyles.formError}>
+                    {String(formErrors.title)}
+                  </Text>
+                )}
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>Description:</Text>
+                  <TextInput
+                    style={AddRecipeStyles.textInput}
+                    value={recipeToEdit.description}
+                    onChangeText={(updatedDescription) =>
+                      handleInput("description", updatedDescription)
+                    }
+                  />
+                </View>
+                {formErrors.description && (
+                  <Text style={AddRecipeStyles.formError}>
+                    {String(formErrors.description)}
+                  </Text>
+                )}
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>Image:</Text>
+                  <View style={AddRecipeStyles.inputSideButton}>
+                    <TextInput
+                      style={AddRecipeStyles.textInputWithButton}
+                      value={recipeToEdit.imgSrc}
+                      onChangeText={(updatedImage) =>
+                        handleInput("imgSrc", updatedImage)
+                      }
+                    />
+                    <TouchableOpacity
+                      style={AddRecipeStyles.buttonAtInput}
+                      onPress={() => {
+                        navigate.navigate("Camera", {
+                          returnTo: "editRecipe",
+                        });
+                      }}
+                    >
+                      <Text style={AddRecipeStyles.buttonText}>
+                        <Feather name="camera" size={20} color={"white"} />
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {formErrors.imgSrc && (
+                  <Text style={AddRecipeStyles.formError}>
+                    {String(formErrors.imgSrc)}
+                  </Text>
+                )}
+              </View>
+              <View style={AddRecipeStyles.MainContainer}>
+                <View style={AddRecipeStyles.subtitleContainer}>
+                  <Text style={AddRecipeStyles.subTitle}>Ingredients</Text>
                   <TouchableOpacity
-                    style={AddRecipeStyles.buttonAtInput}
+                    style={AddRecipeStyles.addButton}
                     onPress={() => {
-                      navigate.navigate("Camera", {
-                        returnTo: "editRecipe",
-                      });
+                      addItem("ingredients");
                     }}
                   >
-                    <Text style={AddRecipeStyles.buttonText}>
-                      <Feather name="camera" size={20} color={"white"} />
-                    </Text>
+                    <Text style={AddRecipeStyles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
-              </View>
 
-              {formErrors.imgSrc && (
-                <Text style={AddRecipeStyles.formError}>
-                  {String(formErrors.imgSrc)}
-                </Text>
-              )}
-            </View>
-            <View style={AddRecipeStyles.MainContainer}>
-              <View style={AddRecipeStyles.subtitleContainer}>
-                <Text style={AddRecipeStyles.subTitle}>Ingredients</Text>
+                <View style={AddRecipeStyles.list}>
+                  {recipeToEdit.ingredients.map((ingredients, index) => (
+                    <View key={index} style={AddRecipeStyles.input}>
+                      <Text style={AddRecipeStyles.label}>
+                        Ingredient {index + 1}:
+                      </Text>
+                      <View style={AddRecipeStyles.inputSideButton}>
+                        <TextInput
+                          style={AddRecipeStyles.textInputWithButton}
+                          value={ingredients}
+                          onChangeText={(updatedIngredients) =>
+                            handleInput(
+                              "ingredients",
+                              updatedIngredients,
+                              index
+                            )
+                          }
+                        />
+                        <TouchableOpacity
+                          style={AddRecipeStyles.buttonAtInput}
+                          onPress={() => {
+                            removeItem("ingredients", index);
+                          }}
+                        >
+                          <Text style={AddRecipeStyles.buttonText}>-</Text>
+                        </TouchableOpacity>
+                      </View>
+                      {formErrors.ingredients?.[index] && (
+                        <Text style={AddRecipeStyles.formError}>
+                          {String(formErrors.ingredients[index])}
+                        </Text>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              </View>
+              <View style={AddRecipeStyles.MainContainer}>
+                <View style={AddRecipeStyles.subtitleContainer}>
+                  <Text style={AddRecipeStyles.subTitle}>Steps</Text>
+                  <TouchableOpacity
+                    style={AddRecipeStyles.addButton}
+                    onPress={() => {
+                      addItem("steps");
+                    }}
+                  >
+                    <Text style={AddRecipeStyles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={AddRecipeStyles.list}>
+                  {recipeToEdit.steps.map((steps, index) => (
+                    <View key={index} style={AddRecipeStyles.input}>
+                      <Text style={AddRecipeStyles.label}>
+                        Step {index + 1}:
+                      </Text>
+                      <View style={AddRecipeStyles.inputSideButton}>
+                        <TextInput
+                          style={AddRecipeStyles.textInputWithButton}
+                          value={steps}
+                          onChangeText={(updatedSteps) =>
+                            handleInput("steps", updatedSteps, index)
+                          }
+                        />
+                        <TouchableOpacity
+                          style={AddRecipeStyles.buttonAtInput}
+                          onPress={() => {
+                            removeItem("steps", index);
+                          }}
+                        >
+                          <Text style={AddRecipeStyles.buttonText}>-</Text>
+                        </TouchableOpacity>
+                      </View>
+                      {formErrors.steps?.[index] && (
+                        <Text style={AddRecipeStyles.formError}>
+                          {String(formErrors.steps[index])}
+                        </Text>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              </View>
+              <View style={AddRecipeStyles.buttons}>
                 <TouchableOpacity
-                  style={AddRecipeStyles.addButton}
-                  onPress={() => {
-                    addItem("ingredients");
-                  }}
+                  style={AddRecipeStyles.button}
+                  onPress={() => handleEditRecipe()}
                 >
-                  <Text style={AddRecipeStyles.buttonText}>+</Text>
+                  <Text style={AddRecipeStyles.buttonText}>Edit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={AddRecipeStyles.button}
+                  onPress={() => handleCancel()}
+                >
+                  <Text style={AddRecipeStyles.buttonText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
-
-              <View style={AddRecipeStyles.list}>
-                {recipeToEdit.ingredients.map((ingredients, index) => (
-                  <View key={index} style={AddRecipeStyles.input}>
-                    <Text style={AddRecipeStyles.label}>
-                      Ingredient {index + 1}:
-                    </Text>
-                    <View style={AddRecipeStyles.inputSideButton}>
-                      <TextInput
-                        style={AddRecipeStyles.textInputWithButton}
-                        value={ingredients}
-                        onChangeText={(updatedIngredients) =>
-                          handleInput("ingredients", updatedIngredients, index)
-                        }
-                      />
-                      <TouchableOpacity
-                        style={AddRecipeStyles.buttonAtInput}
-                        onPress={() => {
-                          removeItem("ingredients", index);
-                        }}
-                      >
-                        <Text style={AddRecipeStyles.buttonText}>-</Text>
-                      </TouchableOpacity>
-                    </View>
-                    {formErrors.ingredients?.[index] && (
-                      <Text style={AddRecipeStyles.formError}>
-                        {String(formErrors.ingredients[index])}
-                      </Text>
-                    )}
-                  </View>
-                ))}
-              </View>
-            </View>
-            <View style={AddRecipeStyles.MainContainer}>
-              <View style={AddRecipeStyles.subtitleContainer}>
-                <Text style={AddRecipeStyles.subTitle}>Steps</Text>
-                <TouchableOpacity
-                  style={AddRecipeStyles.addButton}
-                  onPress={() => {
-                    addItem("steps");
-                  }}
-                >
-                  <Text style={AddRecipeStyles.buttonText}>+</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={AddRecipeStyles.list}>
-                {recipeToEdit.steps.map((steps, index) => (
-                  <View key={index} style={AddRecipeStyles.input}>
-                    <Text style={AddRecipeStyles.label}>Step {index + 1}:</Text>
-                    <View style={AddRecipeStyles.inputSideButton}>
-                      <TextInput
-                        style={AddRecipeStyles.textInputWithButton}
-                        value={steps}
-                        onChangeText={(updatedSteps) =>
-                          handleInput("steps", updatedSteps, index)
-                        }
-                      />
-                      <TouchableOpacity
-                        style={AddRecipeStyles.buttonAtInput}
-                        onPress={() => {
-                          removeItem("steps", index);
-                        }}
-                      >
-                        <Text style={AddRecipeStyles.buttonText}>-</Text>
-                      </TouchableOpacity>
-                    </View>
-                    {formErrors.steps?.[index] && (
-                      <Text style={AddRecipeStyles.formError}>
-                        {String(formErrors.steps[index])}
-                      </Text>
-                    )}
-                  </View>
-                ))}
-              </View>
-            </View>
-            <View style={AddRecipeStyles.buttons}>
-              <TouchableOpacity
-                style={AddRecipeStyles.button}
-                onPress={() => handleEditRecipe()}
-              >
-                <Text style={AddRecipeStyles.buttonText}>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={AddRecipeStyles.button}
-                onPress={() => handleCancel()}
-              >
-                <Text style={AddRecipeStyles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-      </ScrollView>
+            </>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

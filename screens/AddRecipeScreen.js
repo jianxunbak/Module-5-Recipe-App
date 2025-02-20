@@ -1,4 +1,6 @@
 import {
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -7,8 +9,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddRecipeStyles from "../styles/AddRecipeStyles";
-import { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RecipeValidationContext } from "../Context/RecipeValidationContext";
 import recipeApi from "../api/recipeApi";
 import Feather from "@expo/vector-icons/Feather";
@@ -16,11 +18,13 @@ import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import { recipeContext } from "../Context/RecipeContext";
 import { ActivityIndicator } from "react-native-paper";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { LocationContext } from "../Context/LocationContext";
 
 export default AddRecipe = ({ route }) => {
   const { navigate } = useNavigation();
   const navigation = useNavigation();
-
+  const { setLocation, getCurrentLocation, location } =
+    useContext(LocationContext);
   const { photo } = route.params || {};
   const { validateRealTimeField, validationOnSubmit, formErrors } = useContext(
     RecipeValidationContext
@@ -37,6 +41,28 @@ export default AddRecipe = ({ route }) => {
       }));
     }
   }, [photo]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchLocation = async () => {
+        console.log("fetching recipes");
+        await getCurrentLocation();
+      };
+      fetchLocation();
+    }, [])
+  );
+  useEffect(() => {
+    console.log("useeffect called");
+    console.log(location);
+    if (location.city !== "Unknown city") {
+      setRecipeToAdd((prevRecipe) => ({
+        ...prevRecipe,
+        city: location.city,
+        latitude: location.latitude,
+        longitude: location.longitude,
+      }));
+    }
+  }, [location]);
 
   const addItem = (type) => {
     if (type === "ingredients") {
@@ -129,7 +155,7 @@ export default AddRecipe = ({ route }) => {
       const response = await recipeApi.post("/recipe", recipeToAdd);
       if (response.status === 201) {
         alert(
-          `item added:\nTitle: ${recipeToAdd.title}\nDescription: ${recipe.description}\nIngredients: ${recipe.ingredients}\nRecipe: ${recipe.steps}`
+          `item added:\nTitle: ${recipeToAdd.title}\nDescription: ${recipeToAdd.description}\nIngredients: ${recipeToAdd.ingredients}\nRecipe: ${recipeToAdd.steps}`
         );
         navigate("Recipes", { screen: "All Recipes" });
       }
@@ -150,193 +176,209 @@ export default AddRecipe = ({ route }) => {
 
   return (
     <SafeAreaView style={AddRecipeStyles.SafeAreaView}>
-      <ScrollView style={AddRecipeStyles.scrollView}>
-        <View style={AddRecipeStyles.titleContainer}>
-          <TouchableOpacity
-            style={AddRecipeStyles.backArrow}
-            onPress={() => navigation.goBack()}
-          >
-            <Ionicons name="return-down-back" size={25} color={"black"} />
-          </TouchableOpacity>
-          <Text style={AddRecipeStyles.title}>Add Recipe</Text>
-        </View>
-
-        {isLoading ? (
-          <View>
-            <Text>Adding Recipe...</Text>
-            <ActivityIndicator animating={true} color="#6200ee" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <ScrollView style={AddRecipeStyles.scrollView}>
+          <View style={AddRecipeStyles.titleContainer}>
+            <TouchableOpacity
+              style={AddRecipeStyles.backArrow}
+              onPress={() => navigation.goBack()}
+            >
+              <Ionicons name="return-down-back" size={25} color={"black"} />
+            </TouchableOpacity>
+            <Text style={AddRecipeStyles.title}>Add Recipe</Text>
           </View>
-        ) : (
-          <>
-            <View style={AddRecipeStyles.MainContainer}>
-              <Text style={AddRecipeStyles.subTitle}>Recipe Details</Text>
-              <View style={AddRecipeStyles.input}>
-                <Text style={AddRecipeStyles.label}>Title:</Text>
-                <TextInput
-                  style={AddRecipeStyles.textInput}
-                  value={recipeToAdd.title}
-                  onChangeText={(updatedTitle) =>
-                    handleInput("title", updatedTitle)
-                  }
-                />
-              </View>
-              {formErrors.title && (
-                <Text style={AddRecipeStyles.formError}>
-                  {String(formErrors.title)}
-                </Text>
-              )}
-              <View style={AddRecipeStyles.input}>
-                <Text style={AddRecipeStyles.label}>Description:</Text>
-                <TextInput
-                  style={AddRecipeStyles.textInput}
-                  value={recipeToAdd.description}
-                  onChangeText={(updatedDescription) =>
-                    handleInput("description", updatedDescription)
-                  }
-                />
-              </View>
-              {formErrors.description && (
-                <Text style={AddRecipeStyles.formError}>
-                  {String(formErrors.description)}
-                </Text>
-              )}
-              <View style={AddRecipeStyles.input}>
-                <Text style={AddRecipeStyles.label}>Image:</Text>
-                <View style={AddRecipeStyles.inputSideButton}>
+
+          {isLoading ? (
+            <View>
+              <Text>Adding Recipe...</Text>
+              <ActivityIndicator animating={true} color="#6200ee" />
+            </View>
+          ) : (
+            <>
+              <View style={AddRecipeStyles.MainContainer}>
+                <Text style={AddRecipeStyles.subTitle}>Recipe Details</Text>
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>City:</Text>
+                  <Text style={AddRecipeStyles.textInput}>
+                    {recipeToAdd.city}
+                  </Text>
+                </View>
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>Title:</Text>
                   <TextInput
-                    style={AddRecipeStyles.textInputWithButton}
-                    value={recipeToAdd.imgSrc}
-                    onChangeText={(updatedImage) =>
-                      handleInput("imgSrc", updatedImage)
+                    style={AddRecipeStyles.textInput}
+                    value={recipeToAdd.title}
+                    onChangeText={(updatedTitle) =>
+                      handleInput("title", updatedTitle)
                     }
                   />
+                </View>
+                {formErrors.title && (
+                  <Text style={AddRecipeStyles.formError}>
+                    {String(formErrors.title)}
+                  </Text>
+                )}
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>Description:</Text>
+                  <TextInput
+                    style={AddRecipeStyles.textInput}
+                    value={recipeToAdd.description}
+                    onChangeText={(updatedDescription) =>
+                      handleInput("description", updatedDescription)
+                    }
+                  />
+                </View>
+                {formErrors.description && (
+                  <Text style={AddRecipeStyles.formError}>
+                    {String(formErrors.description)}
+                  </Text>
+                )}
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>Image:</Text>
+                  <View style={AddRecipeStyles.inputSideButton}>
+                    <TextInput
+                      style={AddRecipeStyles.textInputWithButton}
+                      value={recipeToAdd.imgSrc}
+                      onChangeText={(updatedImage) =>
+                        handleInput("imgSrc", updatedImage)
+                      }
+                    />
+                    <TouchableOpacity
+                      style={AddRecipeStyles.buttonAtInput}
+                      onPress={() => {
+                        navigate("Recipes", {
+                          screen: "Camera",
+                          params: { returnTo: "addRecipe" },
+                        });
+                      }}
+                    >
+                      <Text style={AddRecipeStyles.buttonText}>
+                        <Feather name="camera" size={20} color={"white"} />
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {formErrors.imgSrc && (
+                  <Text style={AddRecipeStyles.formError}>
+                    {String(formErrors.imgSrc)}
+                  </Text>
+                )}
+              </View>
+              <View style={AddRecipeStyles.MainContainer}>
+                <View style={AddRecipeStyles.subtitleContainer}>
+                  <Text style={AddRecipeStyles.subTitle}>Ingredients</Text>
                   <TouchableOpacity
-                    style={AddRecipeStyles.buttonAtInput}
+                    style={AddRecipeStyles.addButton}
                     onPress={() => {
-                      navigate("Recipes", {
-                        screen: "Camera",
-                        params: { returnTo: "addRecipe" },
-                      });
+                      addItem("ingredients");
                     }}
                   >
-                    <Text style={AddRecipeStyles.buttonText}>
-                      <Feather name="camera" size={20} color={"white"} />
-                    </Text>
+                    <Text style={AddRecipeStyles.buttonText}>+</Text>
                   </TouchableOpacity>
                 </View>
-              </View>
 
-              {formErrors.imgSrc && (
-                <Text style={AddRecipeStyles.formError}>
-                  {String(formErrors.imgSrc)}
-                </Text>
-              )}
-            </View>
-            <View style={AddRecipeStyles.MainContainer}>
-              <View style={AddRecipeStyles.subtitleContainer}>
-                <Text style={AddRecipeStyles.subTitle}>Ingredients</Text>
+                <View style={AddRecipeStyles.list}>
+                  {recipeToAdd.ingredients.map((ingredients, index) => (
+                    <View key={index} style={AddRecipeStyles.input}>
+                      <Text style={AddRecipeStyles.label}>
+                        Ingredient {index + 1}:
+                      </Text>
+                      <View style={AddRecipeStyles.inputSideButton}>
+                        <TextInput
+                          style={AddRecipeStyles.textInputWithButton}
+                          value={ingredients}
+                          onChangeText={(updatedIngredients) =>
+                            handleInput(
+                              "ingredients",
+                              updatedIngredients,
+                              index
+                            )
+                          }
+                        />
+                        <TouchableOpacity
+                          style={AddRecipeStyles.buttonAtInput}
+                          onPress={() => {
+                            removeItem("ingredients", index);
+                          }}
+                        >
+                          <Text style={AddRecipeStyles.buttonText}>-</Text>
+                        </TouchableOpacity>
+                      </View>
+                      {formErrors.ingredients?.[index] && (
+                        <Text style={AddRecipeStyles.formError}>
+                          {String(formErrors.ingredients[index])}
+                        </Text>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              </View>
+              <View style={AddRecipeStyles.MainContainer}>
+                <View style={AddRecipeStyles.subtitleContainer}>
+                  <Text style={AddRecipeStyles.subTitle}>Steps</Text>
+                  <TouchableOpacity
+                    style={AddRecipeStyles.addButton}
+                    onPress={() => {
+                      addItem("steps");
+                    }}
+                  >
+                    <Text style={AddRecipeStyles.buttonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={AddRecipeStyles.list}>
+                  {recipeToAdd.steps.map((steps, index) => (
+                    <View key={index} style={AddRecipeStyles.input}>
+                      <Text style={AddRecipeStyles.label}>
+                        Step {index + 1}:
+                      </Text>
+                      <View style={AddRecipeStyles.inputSideButton}>
+                        <TextInput
+                          style={AddRecipeStyles.textInputWithButton}
+                          value={steps}
+                          onChangeText={(updatedSteps) =>
+                            handleInput("steps", updatedSteps, index)
+                          }
+                        />
+                        <TouchableOpacity
+                          style={AddRecipeStyles.buttonAtInput}
+                          onPress={() => {
+                            removeItem("steps", index);
+                          }}
+                        >
+                          <Text style={AddRecipeStyles.buttonText}>-</Text>
+                        </TouchableOpacity>
+                      </View>
+                      {formErrors.steps?.[index] && (
+                        <Text style={AddRecipeStyles.formError}>
+                          {String(formErrors.steps[index])}
+                        </Text>
+                      )}
+                    </View>
+                  ))}
+                </View>
+              </View>
+              <View style={AddRecipeStyles.buttons}>
                 <TouchableOpacity
-                  style={AddRecipeStyles.addButton}
-                  onPress={() => {
-                    addItem("ingredients");
-                  }}
+                  style={AddRecipeStyles.button}
+                  onPress={() => handleAddRecipe()}
                 >
-                  <Text style={AddRecipeStyles.buttonText}>+</Text>
+                  <Text style={AddRecipeStyles.buttonText}>Add</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={AddRecipeStyles.button}
+                  onPress={() => handleCancel()}
+                >
+                  <Text style={AddRecipeStyles.buttonText}>Cancel</Text>
                 </TouchableOpacity>
               </View>
-
-              <View style={AddRecipeStyles.list}>
-                {recipeToAdd.ingredients.map((ingredients, index) => (
-                  <View key={index} style={AddRecipeStyles.input}>
-                    <Text style={AddRecipeStyles.label}>
-                      Ingredient {index + 1}:
-                    </Text>
-                    <View style={AddRecipeStyles.inputSideButton}>
-                      <TextInput
-                        style={AddRecipeStyles.textInputWithButton}
-                        value={ingredients}
-                        onChangeText={(updatedIngredients) =>
-                          handleInput("ingredients", updatedIngredients, index)
-                        }
-                      />
-                      <TouchableOpacity
-                        style={AddRecipeStyles.buttonAtInput}
-                        onPress={() => {
-                          removeItem("ingredients", index);
-                        }}
-                      >
-                        <Text style={AddRecipeStyles.buttonText}>-</Text>
-                      </TouchableOpacity>
-                    </View>
-                    {formErrors.ingredients?.[index] && (
-                      <Text style={AddRecipeStyles.formError}>
-                        {String(formErrors.ingredients[index])}
-                      </Text>
-                    )}
-                  </View>
-                ))}
-              </View>
-            </View>
-            <View style={AddRecipeStyles.MainContainer}>
-              <View style={AddRecipeStyles.subtitleContainer}>
-                <Text style={AddRecipeStyles.subTitle}>Steps</Text>
-                <TouchableOpacity
-                  style={AddRecipeStyles.addButton}
-                  onPress={() => {
-                    addItem("steps");
-                  }}
-                >
-                  <Text style={AddRecipeStyles.buttonText}>+</Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={AddRecipeStyles.list}>
-                {recipeToAdd.steps.map((steps, index) => (
-                  <View key={index} style={AddRecipeStyles.input}>
-                    <Text style={AddRecipeStyles.label}>Step {index + 1}:</Text>
-                    <View style={AddRecipeStyles.inputSideButton}>
-                      <TextInput
-                        style={AddRecipeStyles.textInputWithButton}
-                        value={steps}
-                        onChangeText={(updatedSteps) =>
-                          handleInput("steps", updatedSteps, index)
-                        }
-                      />
-                      <TouchableOpacity
-                        style={AddRecipeStyles.buttonAtInput}
-                        onPress={() => {
-                          removeItem("steps", index);
-                        }}
-                      >
-                        <Text style={AddRecipeStyles.buttonText}>-</Text>
-                      </TouchableOpacity>
-                    </View>
-                    {formErrors.steps?.[index] && (
-                      <Text style={AddRecipeStyles.formError}>
-                        {String(formErrors.steps[index])}
-                      </Text>
-                    )}
-                  </View>
-                ))}
-              </View>
-            </View>
-            <View style={AddRecipeStyles.buttons}>
-              <TouchableOpacity
-                style={AddRecipeStyles.button}
-                onPress={() => handleAddRecipe()}
-              >
-                <Text style={AddRecipeStyles.buttonText}>Add</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={AddRecipeStyles.button}
-                onPress={() => handleCancel()}
-              >
-                <Text style={AddRecipeStyles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-      </ScrollView>
+            </>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
