@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddRecipeStyles from "../styles/AddRecipeStyles";
-import { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RecipeValidationContext } from "../Context/RecipeValidationContext";
 import recipeApi from "../api/recipeApi";
 import Feather from "@expo/vector-icons/Feather";
@@ -18,11 +18,13 @@ import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import { recipeContext } from "../Context/RecipeContext";
 import { ActivityIndicator } from "react-native-paper";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { LocationContext } from "../Context/LocationContext";
 
 export default AddRecipe = ({ route }) => {
   const { navigate } = useNavigation();
   const navigation = useNavigation();
-
+  const { setLocation, getCurrentLocation, location } =
+    useContext(LocationContext);
   const { photo } = route.params || {};
   const { validateRealTimeField, validationOnSubmit, formErrors } = useContext(
     RecipeValidationContext
@@ -39,6 +41,28 @@ export default AddRecipe = ({ route }) => {
       }));
     }
   }, [photo]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchLocation = async () => {
+        console.log("fetching recipes");
+        await getCurrentLocation();
+      };
+      fetchLocation();
+    }, [])
+  );
+  useEffect(() => {
+    console.log("useeffect called");
+    console.log(location);
+    if (location.city !== "Unknown city") {
+      setRecipeToAdd((prevRecipe) => ({
+        ...prevRecipe,
+        city: location.city,
+        latitude: location.latitude,
+        longitude: location.longitude,
+      }));
+    }
+  }, [location]);
 
   const addItem = (type) => {
     if (type === "ingredients") {
@@ -131,7 +155,7 @@ export default AddRecipe = ({ route }) => {
       const response = await recipeApi.post("/recipe", recipeToAdd);
       if (response.status === 201) {
         alert(
-          `item added:\nTitle: ${recipeToAdd.title}\nDescription: ${recipe.description}\nIngredients: ${recipe.ingredients}\nRecipe: ${recipe.steps}`
+          `item added:\nTitle: ${recipeToAdd.title}\nDescription: ${recipeToAdd.description}\nIngredients: ${recipeToAdd.ingredients}\nRecipe: ${recipeToAdd.steps}`
         );
         navigate("Recipes", { screen: "All Recipes" });
       }
@@ -175,6 +199,12 @@ export default AddRecipe = ({ route }) => {
             <>
               <View style={AddRecipeStyles.MainContainer}>
                 <Text style={AddRecipeStyles.subTitle}>Recipe Details</Text>
+                <View style={AddRecipeStyles.input}>
+                  <Text style={AddRecipeStyles.label}>City:</Text>
+                  <Text style={AddRecipeStyles.textInput}>
+                    {recipeToAdd.city}
+                  </Text>
+                </View>
                 <View style={AddRecipeStyles.input}>
                   <Text style={AddRecipeStyles.label}>Title:</Text>
                   <TextInput

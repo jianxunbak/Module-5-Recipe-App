@@ -50,6 +50,7 @@ const AddRecipeStyles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#CBC3E3",
     borderWidth: 0,
+    textAlignVertical: "center",
   },
 
   list: {

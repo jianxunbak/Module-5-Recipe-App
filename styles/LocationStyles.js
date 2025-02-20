@@ -14,6 +14,11 @@ const LocationStyles = StyleSheet.create({
     height: height,
     width: width,
   },
+  mapImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
 });
 
 export default LocationStyles;

@@ -7,8 +7,8 @@ export function LocationProvider({ children }) {
   const [errorMsg, setErrorMsg] = useState(null);
   //   const [isActive, setIsActive] = useState(false);
   const [location, setLocation] = useState({
-    address: "",
-    city: "",
+    address: "Unknown address",
+    city: "Unknown city",
     latitude: 1.3521,
     longitude: 103.8198,
     latitudeDelta: 0.4,
