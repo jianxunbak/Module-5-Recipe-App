@@ -46,6 +46,14 @@
         {
           "photosPermission": "Allow $(PRODUCT_NAME) to access your photos."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to access your location?",
+          "locationAlwaysPermission": "Allow $(PRODUCT_NAME) to access your location in the background?",
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to access your location while using the app?"
+        }
       ]
     ]
   }

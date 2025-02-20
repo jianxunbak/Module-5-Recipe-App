@@ -16,6 +16,8 @@ export const UserProvider = ({ children }) => {
     about: "",
     profilePic: "",
     password: "",
+    location: { latitude: "", longitude: "" },
+    address: "",
   });
 
   return (

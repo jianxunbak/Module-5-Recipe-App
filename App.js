@@ -10,9 +10,8 @@ import { Provider as PaperProvider } from "react-native-paper";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { UserProvider, useUser } from "./Context/UserContext.js";
 import { RecipeValidationProvider } from "./Context/RecipeValidationContext.js";
@@ -32,6 +31,8 @@ import RecipeCardScreen from "./screens/RecipeCardScreen";
 import CameraScreen from "./screens/CameraScreen";
 import EditRecipeScreen from "./screens/EditRecipeScreen.js";
 import EditProfileScreen from "./screens/EditProfileScreen.js";
+import LocationScreen from "./screens/LocationScreen.js";
+import { LocationProvider } from "./Context/LocationContext.js";
 //Tab Navigator
 const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
@@ -80,6 +81,19 @@ const TabNavigator = () => {
           tabBarIcon: ({ color, size }) => {
             return (
               <Ionicons name="add-circle" size={size} color={color}></Ionicons>
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="location"
+        component={LocationScreen}
+        options={{
+          headerShown: false,
+          title: "location",
+          tabBarIcon: ({ color, size }) => {
+            return (
+              <FontAwesome name="map" size={size} color={color}></FontAwesome>
             );
           },
         }}
@@ -250,19 +264,21 @@ export default function App() {
   return (
     <PaperProvider>
       <LoginProvider>
-        <UserProvider>
-          <IsLoadingAndEditingProvider>
-            <FavoriteProvider>
-              <RecipeProvider>
-                <RecipeValidationProvider>
-                  <NavigationContainer>
-                    <AppNavigator />
-                  </NavigationContainer>
-                </RecipeValidationProvider>
-              </RecipeProvider>
-            </FavoriteProvider>
-          </IsLoadingAndEditingProvider>
-        </UserProvider>
+        <LocationProvider>
+          <UserProvider>
+            <IsLoadingAndEditingProvider>
+              <FavoriteProvider>
+                <RecipeProvider>
+                  <RecipeValidationProvider>
+                    <NavigationContainer>
+                      <AppNavigator />
+                    </NavigationContainer>
+                  </RecipeValidationProvider>
+                </RecipeProvider>
+              </FavoriteProvider>
+            </IsLoadingAndEditingProvider>
+          </UserProvider>
+        </LocationProvider>
       </LoginProvider>
     </PaperProvider>
   );
