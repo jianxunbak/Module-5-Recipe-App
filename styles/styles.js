@@ -25,6 +25,8 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     textAlign: "center",
+    justifyContent: "center",
+    color: "grey",
   },
   button: {
     margin: 8,

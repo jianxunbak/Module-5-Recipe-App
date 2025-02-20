@@ -72,6 +72,7 @@ const RecipeStyles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     gap: 10,
+    justifyContent: "space-evenly",
   },
   buttonText: {
     color: "white",

@@ -11,6 +11,10 @@ const AddRecipeStyles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
   },
+  SafeAreaView: {
+    flex: 1,
+    marginTop: 60,
+  },
   title: {
     paddingLeft: 20,
     paddingRight: 20,
@@ -107,6 +111,13 @@ const AddRecipeStyles = StyleSheet.create({
     fontSize: 12,
     color: "red",
     marginLeft: 100,
+  },
+  backArrow: {
+    marginTop: 10,
+    marginLeft: 20,
+  },
+  titleContainer: {
+    flexDirection: "row",
   },
 });
 

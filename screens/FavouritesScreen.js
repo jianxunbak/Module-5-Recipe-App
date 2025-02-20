@@ -11,6 +11,7 @@ import { favoriteContext } from "../Context/FavouritesContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { recipeContext } from "../Context/RecipeContext";
 import FavoriteStyle from "../styles/FavoriteStyles";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
@@ -19,6 +20,8 @@ export default function FavouritesScreenTemp() {
     useContext(favoriteContext);
   const { allRecipes, getAllRecipes } = useContext(recipeContext);
   const { navigate } = useNavigation();
+  const navigation = useNavigation();
+
   useFocusEffect(
     useCallback(() => {
       getAllRecipes();
@@ -36,9 +39,12 @@ export default function FavouritesScreenTemp() {
     });
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Text style={FavoriteStyle.MainTitle}>Favourites List</Text>
-      <ScrollView>
+    <SafeAreaView style={FavoriteStyle.SafeAreaView}>
+      <ScrollView style={FavoriteStyle.scrollView}>
+        <View style={FavoriteStyle.titleContainer}>
+          <Text style={FavoriteStyle.MainTitle}>Favourites List</Text>
+        </View>
+
         {favoriteItems.map((item, index) => (
           <TouchableOpacity
             key={index}

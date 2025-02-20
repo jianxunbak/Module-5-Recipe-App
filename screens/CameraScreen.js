@@ -1,6 +1,12 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useEffect, useRef, useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import CameraStyle from "../styles/CameraStyles";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -13,11 +19,10 @@ export default CameraScreen = ({ route }) => {
   const [permission, requestPermission] = useCameraPermissions();
   const [selectedImage, setSelectedImage] = useState(null);
   const cameraRef = useRef(null);
-  const { navigate } = useNavigation();
+  const navigate = useNavigation();
+  const { navigation } = useNavigation();
+
   const { returnTo } = route.params || {};
-  useEffect(() => {
-    console.log(returnTo);
-  }, []);
 
   if (!permission) {
     return;
@@ -69,12 +74,12 @@ export default CameraScreen = ({ route }) => {
         console.log(selectedImageUri);
         setSelectedImage(results.assets[0].uri);
         if (returnTo === "addRecipe") {
-          navigate("Home", {
+          navigation("Home", {
             screen: "addRecipe",
             params: { photo: selectedImageUri },
           });
         } else if (returnTo === "editRecipe") {
-          navigate("Edit Recipes", {
+          navigation("Edit Recipes", {
             photo: selectedImageUri,
           });
         } else {
@@ -87,31 +92,44 @@ export default CameraScreen = ({ route }) => {
     }
   };
   return (
-    <View style={CameraStyle.container}>
-      <CameraView
-        style={CameraStyle.camera}
-        facing={facing}
-        ref={cameraRef}
-        photo={true}
-      ></CameraView>
-      <View style={CameraStyle.cameraContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            imagePicker();
-          }}
+    <SafeAreaView styles={CameraStyle.SafeAreaView}>
+      <View style={CameraStyle.container}>
+        <CameraView
+          style={CameraStyle.camera}
+          facing={facing}
+          ref={cameraRef}
+          photo={true}
         >
-          <MaterialIcons name="flip-camera-android" size={50} color={"white"} />
-          {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={takePhoto}>
-          <Ionicons name="radio-button-on" size={80} color={"white"} />
-          {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={toggleCameraFacing}>
-          <MaterialIcons name="flip-camera-android" size={50} color={"white"} />
-          {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={CameraStyle.backArrow}
+            onPress={() => navigate.goBack()}
+          >
+            <Ionicons name="return-down-back" size={25} color={"black"} />
+          </TouchableOpacity>
+        </CameraView>
+        <View style={CameraStyle.cameraContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              imagePicker();
+            }}
+          >
+            <Ionicons name="albums" size={50} color={"white"} />
+            {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={takePhoto}>
+            <Ionicons name="radio-button-on" size={80} color={"white"} />
+            {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={toggleCameraFacing}>
+            <MaterialIcons
+              name="flip-camera-android"
+              size={50}
+              color={"white"}
+            />
+            {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };

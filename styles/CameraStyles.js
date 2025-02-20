@@ -15,12 +15,16 @@ const CameraStyle = StyleSheet.create({
     justifyContent: "space-between", // Centers the buttons horizontally
     alignItems: "center", // Centers the buttons vertically
   },
+  SafeAreaView: {
+    flex: 1,
+    marginTop: 60,
+  },
   message: {
     textAlign: "center",
     paddingBottom: 10,
   },
   camera: {
-    height: height - 300,
+    height: height - 120,
   },
   buttonContainer: {
     flex: 1,
@@ -70,6 +74,11 @@ const CameraStyle = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     backgroundColor: "white",
+  },
+  backArrow: {
+    marginRight: 20,
+    marginTop: 75,
+    alignItems: "flex-end",
   },
 });
 

@@ -10,12 +10,12 @@ import RecipeStyles from "../styles/RecipeStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useCallback, useContext, useEffect, useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
-import recipeApi from "../api/recipeApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext.js";
+import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import { recipeContext } from "../Context/RecipeContext.js";
 import { favoriteContext } from "../Context/FavouritesContext.js";
+import { ActivityIndicator } from "react-native-paper";
 
 export default RecipesScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,19 +26,6 @@ export default RecipesScreen = () => {
   const { allRecipes, setAllRecipes, getAllRecipes } =
     useContext(recipeContext);
   const { favorites, toggleFavorite } = useContext(favoriteContext);
-  // API to get all the recipes
-  // const getAllRecipes = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await recipeApi.get("/recipe");
-  //     setAllRecipes(response.data);
-  //   } catch (error) {
-  //     console.error("Error getting recipes:", error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   useFocusEffect(
     useCallback(() => {
       getAllRecipes();
@@ -68,7 +55,7 @@ export default RecipesScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={RecipeStyles.SafeAreaView}>
       <Text style={RecipeStyles.MainTitle}>Recipes</Text>
       <TextInput
         style={RecipeStyles.searchBar}
@@ -76,21 +63,28 @@ export default RecipesScreen = () => {
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
+      <View style={RecipeStyles.picker}>
+        <RNPickerSelect
+          onValueChange={setSelectedCuisine}
+          items={[
+            { label: "All Cuisines", value: "" },
+            ...cuisines.map((cuisine) => ({ label: cuisine, value: cuisine })),
+          ]}
+          style={{
+            placeholder: {
+              fontSize: 16,
+              color: "grey",
+            },
+          }}
+          placeholder={{ label: "Select Cuisines", value: "" }}
+        />
+      </View>
 
-      <RNPickerSelect
-        onValueChange={setSelectedCuisine}
-        items={[
-          { label: "All Cuisines", value: "" },
-          ...cuisines.map((cuisine) => ({ label: cuisine, value: cuisine })),
-        ]}
-        style={{
-          inputIOS: RecipeStyles.picker,
-          inputAndroid: RecipeStyles.picker,
-        }}
-        placeholder={{ label: "Select Cuisine", value: "" }}
-      />
       {isLoading ? (
-        <Text style={RecipeStyles.loading}>Fetching Recipes...</Text>
+        <View>
+          <Text style={RecipeStyles.text}>Fetching Recipes...</Text>
+          <ActivityIndicator animating={true} color="#6200ee" />
+        </View>
       ) : (
         <ScrollView>
           {filteredRecipes.length > 0 ? (
@@ -143,7 +137,7 @@ export default RecipesScreen = () => {
               </TouchableOpacity>
             ))
           ) : (
-            <Text style={RecipeStyles.noResults}>No recipes found</Text>
+            <Text style={RecipeStyles.text}>No recipes found</Text>
           )}
         </ScrollView>
       )}

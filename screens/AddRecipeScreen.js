@@ -14,9 +14,13 @@ import recipeApi from "../api/recipeApi";
 import Feather from "@expo/vector-icons/Feather";
 import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import { recipeContext } from "../Context/RecipeContext";
+import { ActivityIndicator } from "react-native-paper";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default AddRecipe = ({ route }) => {
   const { navigate } = useNavigation();
+  const navigation = useNavigation();
+
   const { photo } = route.params || {};
   const { validateRealTimeField, validationOnSubmit, formErrors } = useContext(
     RecipeValidationContext
@@ -78,7 +82,7 @@ export default AddRecipe = ({ route }) => {
       ingredients: [""],
       steps: [""],
     });
-    navigate("Recipes", { screen: "All Recipes" });
+    navigate("Home", { screen: "All Recipes" });
   };
 
   const handleInput = (name, value, index = null) => {
@@ -145,13 +149,22 @@ export default AddRecipe = ({ route }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={AddRecipeStyles.SafeAreaView}>
       <ScrollView style={AddRecipeStyles.scrollView}>
-        <Text style={AddRecipeStyles.title}>Add Recipe</Text>
+        <View style={AddRecipeStyles.titleContainer}>
+          <TouchableOpacity
+            style={AddRecipeStyles.backArrow}
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="return-down-back" size={25} color={"black"} />
+          </TouchableOpacity>
+          <Text style={AddRecipeStyles.title}>Add Recipe</Text>
+        </View>
 
         {isLoading ? (
           <View>
-            <Text>Loading...</Text>
+            <Text>Adding Recipe...</Text>
+            <ActivityIndicator animating={true} color="#6200ee" />
           </View>
         ) : (
           <>

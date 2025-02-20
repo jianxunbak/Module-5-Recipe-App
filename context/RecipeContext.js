@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import recipeApi from "../api/recipeApi";
-import { useIsLoadingAndEditing } from "./IsLoadingAndEditingContext";
+import { useIsLoadingAndEditing } from "./IsLoadingAndEditingContext.js";
 
 export const recipeContext = createContext();
 

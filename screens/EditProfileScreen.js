@@ -14,72 +14,12 @@ import recipeApi from "../api/recipeApi";
 import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import Feather from "@expo/vector-icons/Feather";
 import { recipeContext } from "../Context/RecipeContext";
-import { ActivityIndicator } from "react-native-paper";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
-export default EditRecipe = ({ route }) => {
+export default EditProfile = ({ route }) => {
   const navigate = useNavigation();
   const { selectedRecipe, photo } = route.params;
   const { isLoading, setIsLoading, isEditing, setIsEditing } =
     useIsLoadingAndEditing();
-
-  const { recipeToEdit, setRecipeToEdit } = useContext(recipeContext);
-
-  useEffect(() => {
-    if (selectedRecipe) {
-      setRecipeToEdit({
-        id: selectedRecipe.id,
-        imgSrc: photo ? photo || "" : selectedRecipe.imgSrc || "",
-        title: selectedRecipe.title || "",
-        description: selectedRecipe.description || "",
-        ingredients: selectedRecipe.ingredients || [""],
-        steps: selectedRecipe.steps || [""],
-      });
-    }
-  }, [selectedRecipe, photo]);
-
-  const {
-    validateRealTimeField,
-    validationOnSubmit,
-    formErrors,
-    setFormErrors,
-  } = useContext(RecipeValidationContext);
-
-  const addItem = (type) => {
-    if (type === "ingredients") {
-      setRecipeToEdit((prevRecipe) => ({
-        ...prevRecipe,
-        ingredients: [...prevRecipe.ingredients, ""],
-      }));
-    } else if (type === "steps") {
-      setRecipeToEdit((prevRecipe) => ({
-        ...prevRecipe,
-        steps: [...prevRecipe.steps, ""],
-      }));
-    }
-  };
-
-  const removeItem = (type, index) => {
-    if (type === "ingredients") {
-      setRecipeToEdit((prevRecipe) => {
-        const updatedIngredients = [...prevRecipe.ingredients];
-        updatedIngredients.splice(index, 1);
-        return {
-          ...prevRecipe,
-          ingredients: updatedIngredients,
-        };
-      });
-    } else if (type === "steps") {
-      setRecipeToEdit((prevRecipe) => {
-        const updatedSteps = [...prevRecipe.steps];
-        updatedSteps.splice(index, 1);
-        return {
-          ...prevRecipe,
-          steps: updatedSteps,
-        };
-      });
-    }
-  };
 
   const handleCancel = () => {
     setRecipeToEdit({
@@ -92,85 +32,18 @@ export default EditRecipe = ({ route }) => {
     navigate.navigate("All Recipes");
   };
 
-  const handleInput = (name, value, index = null) => {
-    // update the newRecipe state
-    setRecipeToEdit((prevRecipe) => {
-      let updatedRecipe = { ...prevRecipe };
+  const handleInput = () => {};
 
-      // Handle array fields like 'ingredients' and 'steps'
-      if (name === "ingredients" || name === "steps") {
-        const updatedArray = [...prevRecipe[name]]; // Create a copy of the array
-
-        if (index !== null) {
-          updatedArray[index] = value; // Update the specific index
-        }
-
-        updatedRecipe = {
-          ...prevRecipe,
-          [name]: updatedArray, // Update the array in state
-        };
-      } else {
-        // for nonarray fields
-        updatedRecipe = {
-          ...prevRecipe,
-          [name]: value,
-        };
-      }
-      return updatedRecipe;
-    });
-    validateRealTimeField(name, value, index, recipeToEdit);
-  };
-
-  const handleEditRecipe = async () => {
-    const valid = validationOnSubmit(recipeToEdit);
-    if (!valid) {
-      // setIsLoading(false);
-      alert("form not complete");
-      return;
-    }
-    try {
-      // setIsLoading(true);
-      const response = await recipeApi.put(
-        `/recipe/${recipeToEdit.id}`,
-        recipeToEdit
-      );
-      if (response.status === 200) {
-        alert(
-          `item added:\nTitle: ${recipeToEdit.title}\nDescription: ${recipeToEdit.description}\nIngredients: ${recipeToEdit.ingredients}\nRecipe: ${recipeToEdit.steps}`
-        );
-        navigate.navigate("All Recipes");
-      }
-    } catch (error) {
-      console.error("Error editing recipe:", error);
-      alert("Error editing recipe:", error);
-    } finally {
-      setRecipeToEdit({
-        imgSrc: "",
-        title: "",
-        description: "",
-        ingredients: [""],
-        steps: [""],
-      });
-    }
-  };
+  const handleEditProfile = () => {};
 
   return (
-    <SafeAreaView style={AddRecipeStyles.SafeAreaView}>
+    <SafeAreaView>
       <ScrollView style={AddRecipeStyles.scrollView}>
-        <View style={AddRecipeStyles.titleContainer}>
-          <TouchableOpacity
-            style={AddRecipeStyles.backArrow}
-            onPress={() => navigate.goBack()}
-          >
-            <Ionicons name="return-down-back" size={25} color={"black"} />
-          </TouchableOpacity>
-          <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
-        </View>
+        <Text style={AddRecipeStyles.title}>Edit Recipe</Text>
 
         {isLoading ? (
           <View>
-            <Text>Editing Recipe...</Text>
-            <ActivityIndicator animating={true} color="#6200ee" />
+            <Text>Loading...</Text>
           </View>
         ) : (
           <>

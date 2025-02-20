@@ -5,22 +5,36 @@ import { useUser } from "../Context/UserContext"; // Import the user context
 import { Button } from "react-native-paper";
 import { styles } from "../styles/styles";
 import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
+import { useLogin } from "../Context/LoginContext";
 
 const HomeScreen = ({ navigation }) => {
   const { user, setUser } = useUser(); // Access user context
+  const { login, setLogin } = useLogin();
+
   const { setIsLoading, setIsEditing } = useIsLoadingAndEditing(); // Access loading/editing context
 
-  //   const handleLogout = () => {
-  //     setUser(null); // Clear user data
-  //     navigation.navigate("Login"); // Navigate back to login screen
-  //   };
+  const handleLogout = () => {
+    setLogin(false);
+    setUser({
+      username: "",
+      id: "",
+      email: "",
+      memberSince: "",
+      about: "",
+      profilePic: "",
+      password: "",
+    });
+    navigation.navigate("Login"); // Navigate back to login screen
+  };
+
   const handleLogin = () => {
+    console.log("Login Button pressed, navigating to login page");
     navigation.navigate("Login");
   };
 
   const handleViewRecipes = () => {
     // Navigate to the Recipe List Screen (you would create this screen next)
-    navigation.navigate("Recipes", { screen: "All Recipes" });
+    navigation.navigate("All Recipes");
   };
 
   return (
@@ -37,27 +51,35 @@ const HomeScreen = ({ navigation }) => {
           marginBottom: 20,
         }}
       />
-      <Text style={styles.title}>All Your Recipes in One Place</Text>
+      {login ? (
+        <Text style={styles.title}> Welcome Back {user.username}</Text>
+      ) : (
+        <Text style={styles.title}>All Your Recipes in One Place</Text>
+      )}
       <Button
         mode="contained"
         style={styles.button}
         onPress={() => {
-          console.log("Login Button pressed");
-          handleLogin();
+          {
+            login ? handleLogout() : handleLogin();
+          }
         }}
       >
-        Login
+        {login ? "Logout" : "Login"}
       </Button>
-
-      <Button
-        mode="outlined"
-        style={styles.button}
-        onPress={() => {
-          console.log("View Recipes pressed"), handleViewRecipes();
-        }}
-      >
-        View Recipes
-      </Button>
+      {login ? (
+        <Button
+          mode="outlined"
+          style={styles.button}
+          onPress={() => {
+            console.log("View Recipes pressed"), handleViewRecipes();
+          }}
+        >
+          View Recipes
+        </Button>
+      ) : (
+        <Text style={styles.text}>Login to view your favorite recipes!</Text>
+      )}
     </View>
   );
 };

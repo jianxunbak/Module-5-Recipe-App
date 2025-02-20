@@ -1,11 +1,22 @@
 import React, { createContext, useState, useContext } from "react";
 
 // Create Context
-const UserContext = createContext();
+const UserContext = createContext({
+  user: null,
+  setUser: () => {},
+});
 
 // Provider Component
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Example user state (null when not logged in)
+  const [user, setUser] = useState({
+    username: "",
+    id: "",
+    email: "",
+    memberSince: "",
+    about: "",
+    profilePic: "",
+    password: "",
+  });
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
