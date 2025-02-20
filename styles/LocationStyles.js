@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-
+import { Dimensions, StyleSheet } from "react-native";
+const { height, width } = Dimensions.get("window");
 const LocationStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -8,6 +8,11 @@ const LocationStyles = StyleSheet.create({
   },
   address: {
     textAlign: "center",
+  },
+  map: {
+    flex: 1,
+    height: height,
+    width: width,
   },
 });
 

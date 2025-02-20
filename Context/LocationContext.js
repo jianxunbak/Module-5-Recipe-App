@@ -8,8 +8,11 @@ export function LocationProvider({ children }) {
   //   const [isActive, setIsActive] = useState(false);
   const [location, setLocation] = useState({
     address: "",
-    latitude: "",
-    longitude: "",
+    city: "",
+    latitude: 1.3521,
+    longitude: 103.8198,
+    latitudeDelta: 0.4,
+    longitudeDelta: 0.4,
   });
   const getCurrentLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -24,11 +27,16 @@ export function LocationProvider({ children }) {
         latitude,
         longitude,
       });
+      let city = "Unknown";
       let address = "Unknown";
       if (addressResult.length > 0) {
-        address = addressResult[0].city || "unknown";
+        city = addressResult[0].city || "unknown";
+        address = addressResult[0].street || "No address available";
       }
-      setLocation(() => ({
+
+      setLocation((prevLocation) => ({
+        ...prevLocation,
+        city: city,
         address: address,
         latitude: latitude,
         longitude: longitude,
@@ -40,7 +48,7 @@ export function LocationProvider({ children }) {
   const contextValue = {
     errorMsg,
     setErrorMsg,
-
+    setLocation,
     getCurrentLocation,
     location,
   };
