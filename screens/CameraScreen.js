@@ -89,44 +89,40 @@ export default CameraScreen = ({ route }) => {
     }
   };
   return (
-    <SafeAreaView styles={CameraStyle.SafeAreaView}>
-      <View style={CameraStyle.container}>
-        <CameraView
-          style={CameraStyle.camera}
-          facing={facing}
-          ref={cameraRef}
-          photo={true}
+    // <SafeAreaView styles={CameraStyle.SafeAreaView}>
+    <View style={CameraStyle.container}>
+      <CameraView
+        style={CameraStyle.camera}
+        facing={facing}
+        ref={cameraRef}
+        photo={true}
+      >
+        <TouchableOpacity
+          style={CameraStyle.backArrow}
+          onPress={() => navigate.goBack()}
         >
-          <TouchableOpacity
-            style={CameraStyle.backArrow}
-            onPress={() => navigate.goBack()}
-          >
-            <Ionicons name="return-down-back" size={25} color={"black"} />
-          </TouchableOpacity>
-        </CameraView>
-        <View style={CameraStyle.cameraContainer}>
-          <TouchableOpacity
-            onPress={() => {
-              imagePicker();
-            }}
-          >
-            <Ionicons name="albums" size={50} color={"white"} />
-            {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={takePhoto}>
-            <Ionicons name="radio-button-on" size={80} color={"white"} />
-            {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={toggleCameraFacing}>
-            <MaterialIcons
-              name="flip-camera-android"
-              size={50}
-              color={"white"}
-            />
-            {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
-          </TouchableOpacity>
-        </View>
+          <Ionicons name="return-down-back" size={25} color={"black"} />
+        </TouchableOpacity>
+      </CameraView>
+      <View style={CameraStyle.cameraContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            imagePicker();
+          }}
+        >
+          <Ionicons name="albums" size={50} color={"white"} />
+          {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
+        </TouchableOpacity>
+        <TouchableOpacity onPress={takePhoto}>
+          <Ionicons name="radio-button-on" size={80} color={"white"} />
+          {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
+        </TouchableOpacity>
+        <TouchableOpacity onPress={toggleCameraFacing}>
+          <MaterialIcons name="flip-camera-android" size={50} color={"white"} />
+          {/* <Text style={CameraStyle.text}>Flip Camera</Text> */}
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
+    // </SafeAreaView>
   );
 };

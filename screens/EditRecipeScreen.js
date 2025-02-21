@@ -91,7 +91,7 @@ export default EditRecipe = ({ route }) => {
       ingredients: [""],
       steps: [""],
     });
-    navigate.navigate("All Recipes");
+    navigate.goBack();
   };
 
   const handleInput = (name, value, index = null) => {
@@ -140,7 +140,7 @@ export default EditRecipe = ({ route }) => {
         alert(
           `item added:\nTitle: ${recipeToEdit.title}\nDescription: ${recipeToEdit.description}\nIngredients: ${recipeToEdit.ingredients}\nRecipe: ${recipeToEdit.steps}`
         );
-        navigate.navigate("All Recipes");
+        navigate.navigate("Home", { screen: "All Recipes" });
       }
     } catch (error) {
       console.error("Error editing recipe:", error);

@@ -22,6 +22,14 @@ const RecipeStyles = StyleSheet.create({
     backgroundColor: "#CBC3E3",
     justifyContent: "center",
   },
+  iosPicker: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  andriodPicker: {
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
   SafeAreaView: {
     flex: 1,
     marginTop: 60,

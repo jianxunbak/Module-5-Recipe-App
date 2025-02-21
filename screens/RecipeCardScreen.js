@@ -47,7 +47,7 @@ export default RecipeCardScreen = ({ route }) => {
 
               if (response.status === 200 || response.status === 204) {
                 alert(`item deleted:\nTitle: ${response.data.title}`);
-                navigate.navigate("All Recipes");
+                navigate.navigate("Home", { screen: "All Recipes" });
               }
             } catch (error) {
               console.error("Error deleting recipe:", error);

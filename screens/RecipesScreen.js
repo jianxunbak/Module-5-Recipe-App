@@ -16,6 +16,7 @@ import { useIsLoadingAndEditing } from "../Context/IsLoadingAndEditingContext";
 import { recipeContext } from "../Context/RecipeContext.js";
 import { favoriteContext } from "../Context/FavouritesContext.js";
 import { ActivityIndicator } from "react-native-paper";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default RecipesScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -71,12 +72,22 @@ export default RecipesScreen = () => {
             ...cuisines.map((cuisine) => ({ label: cuisine, value: cuisine })),
           ]}
           style={{
+            inputIOS: RecipeStyles.iosPicker,
+            inputAndroid: RecipeStyles.andriodPicker,
             placeholder: {
               fontSize: 16,
               color: "grey",
             },
+            iconContainer: {
+              top: 10, // Add space for the arrow
+              right: 10, // Position the arrow on the right
+            },
           }}
           placeholder={{ label: "Select Cuisines", value: "" }}
+          Icon={() => (
+            <MaterialIcons name="arrow-drop-down" size={20} color="gray" />
+          )}
+          useNativeAndroidPickerStyle={false}
         />
       </View>
 

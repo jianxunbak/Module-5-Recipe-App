@@ -3,12 +3,18 @@ const { height, width } = Dimensions.get("window");
 
 const CameraStyle = StyleSheet.create({
   container: {
-    height: height,
+    // height: height,
+    flex: 1,
   },
   cameraContainer: {
+    position: "absolute",
+    bottom: 0, // Position buttons at the bottom of the screen
+    left: 0,
+    right: 0,
     paddingLeft: 20,
     paddingRight: 20,
-    height: 100,
+    paddingBottom: 20,
+    height: 120,
     width: width,
     backgroundColor: "black",
     flexDirection: "row",
@@ -17,7 +23,7 @@ const CameraStyle = StyleSheet.create({
   },
   SafeAreaView: {
     flex: 1,
-    marginTop: 60,
+    // marginTop: 60,
   },
   message: {
     textAlign: "center",
@@ -76,9 +82,9 @@ const CameraStyle = StyleSheet.create({
     backgroundColor: "white",
   },
   backArrow: {
-    marginRight: 20,
-    marginTop: 75,
-    alignItems: "flex-end",
+    position: "absolute",
+    top: 70,
+    right: 20,
   },
 });
 

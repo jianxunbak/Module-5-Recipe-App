@@ -101,6 +101,9 @@ export default AddRecipe = ({ route }) => {
   };
 
   const handleCancel = () => {
+    if (route.params?.photo) {
+      route.params.photo = null;
+    }
     setRecipeToAdd({
       imgSrc: "",
       title: "",
@@ -157,12 +160,15 @@ export default AddRecipe = ({ route }) => {
         alert(
           `item added:\nTitle: ${recipeToAdd.title}\nDescription: ${recipeToAdd.description}\nIngredients: ${recipeToAdd.ingredients}\nRecipe: ${recipeToAdd.steps}`
         );
-        navigate("Recipes", { screen: "All Recipes" });
+        navigate("Home", { screen: "All Recipes" });
       }
     } catch (error) {
       console.error("Error adding recipe:", error);
       alert("Error adding recipe:", error);
     } finally {
+      if (route.params?.photo) {
+        route.params.photo = null;
+      }
       setIsLoading(false);
       setRecipeToAdd({
         imgSrc: "",
@@ -191,8 +197,7 @@ export default AddRecipe = ({ route }) => {
           </View>
 
           {isLoading ? (
-            <View>
-              <Text>Adding Recipe...</Text>
+            <View style={AddRecipeStyles.loading}>
               <ActivityIndicator animating={true} color="#6200ee" />
             </View>
           ) : (

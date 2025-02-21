@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 const { height, width } = Dimensions.get("window");
 
 const AddRecipeStyles = StyleSheet.create({
@@ -38,7 +38,9 @@ const AddRecipeStyles = StyleSheet.create({
     width: width,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 10,
+    justifyContent: "center", // Ensure vertical centering
+    height: 60, // Adjust the height as needed
+    marginTop: 10,
   },
   label: {
     fontSize: 16,
@@ -51,6 +53,8 @@ const AddRecipeStyles = StyleSheet.create({
     backgroundColor: "#CBC3E3",
     borderWidth: 0,
     textAlignVertical: "center",
+    paddingTop: Platform.OS === "ios" ? 10 : 0, // Add padding to align text vertically on iOS
+    paddingBottom: Platform.OS === "ios" ? 10 : 0, // Adjust padding for iOS
   },
 
   list: {
@@ -111,7 +115,9 @@ const AddRecipeStyles = StyleSheet.create({
   formError: {
     fontSize: 12,
     color: "red",
-    marginLeft: 100,
+    marginLeft: 20,
+    marginTop: 10,
+    marginBottom: 10,
   },
   backArrow: {
     marginTop: 10,
@@ -119,6 +125,11 @@ const AddRecipeStyles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
+  },
+  loading: {
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 100,
   },
 });
 
