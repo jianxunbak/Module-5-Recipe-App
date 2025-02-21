@@ -11,8 +11,6 @@ import { favoriteContext } from "../Context/FavouritesContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { recipeContext } from "../Context/RecipeContext";
 import FavoriteStyle from "../styles/FavoriteStyles";
-import Ionicons from "@expo/vector-icons/Ionicons";
-
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function FavouritesScreenTemp() {
@@ -35,9 +33,10 @@ export default function FavouritesScreenTemp() {
   const handleNavigate = (item) => {
     navigate("Recipes", {
       screen: "Recipe card",
-      params: { selectedRecipe: item },
+      params: { returnTo: "fav", selectedRecipe: item },
     });
   };
+
   return (
     <SafeAreaView style={FavoriteStyle.SafeAreaView}>
       <ScrollView style={FavoriteStyle.scrollView}>

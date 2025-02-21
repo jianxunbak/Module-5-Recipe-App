@@ -173,6 +173,7 @@ const DrawerNavigator = () => (
       component={FavouritesScreen}
       options={{
         headerTransparent: true,
+        headerShown: false,
         headerTitle: "",
       }}
     />
@@ -184,7 +185,16 @@ const DrawerNavigator = () => (
         headerTitle: "",
       }}
     />
-    <Drawer.Screen name="editProfile" component={EditProfileScreen} />
+    <Drawer.Screen
+      name="editProfile"
+      component={EditProfileScreen}
+      headerShown={false}
+      options={{
+        drawerItemStyle: { display: "none" },
+        headerTitle: "",
+        headerTransparent: true,
+      }}
+    />
     <Drawer.Screen
       name="Recipes"
       component={RecipeStackNavigator}
@@ -236,6 +246,20 @@ const RecipeStackNavigator = () => (
           height: 250,
         },
         headerTintColor: "black", // Makes sure the back button is visible
+      }}
+    />
+    <RecipeStack.Screen
+      name="DrawerNavigator"
+      component={DrawerNavigator}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <RecipeStack.Screen
+      name="TabNavigator"
+      component={TabNavigator}
+      options={{
+        headerShown: false,
       }}
     />
   </RecipeStack.Navigator>

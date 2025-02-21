@@ -185,7 +185,10 @@ export default AddRecipe = ({ route }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView style={AddRecipeStyles.scrollView}>
+        <ScrollView
+          style={AddRecipeStyles.scrollView}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={AddRecipeStyles.titleContainer}>
             <TouchableOpacity
               style={AddRecipeStyles.backArrow}
@@ -313,9 +316,11 @@ export default AddRecipe = ({ route }) => {
                         </TouchableOpacity>
                       </View>
                       {formErrors.ingredients?.[index] && (
-                        <Text style={AddRecipeStyles.formError}>
-                          {String(formErrors.ingredients[index])}
-                        </Text>
+                        <View>
+                          <Text style={AddRecipeStyles.formError}>
+                            {String(formErrors.ingredients[index])}
+                          </Text>
+                        </View>
                       )}
                     </View>
                   ))}

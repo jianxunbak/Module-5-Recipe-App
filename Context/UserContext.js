@@ -9,19 +9,26 @@ const UserContext = createContext({
 // Provider Component
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
+    username: "Faizal | SE8",
+    id: "joyful_avocado_99353",
+    email: "faizal@example.com",
+    memberSince: "19 Aug 2024",
+    about: "Software Engineer | Tech Enthusiast",
+    profilePic:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQG6U7DsIIUVQmkDyihIPWI-aBCmeLli02NQ&s",
+  });
+
+  const [editUser, setEditUser] = useState({
     username: "",
     id: "",
     email: "",
     memberSince: "",
     about: "",
     profilePic: "",
-    password: "",
-    location: { latitude: "", longitude: "" },
-    address: "",
   });
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, editUser, setEditUser }}>
       {children}
     </UserContext.Provider>
   );

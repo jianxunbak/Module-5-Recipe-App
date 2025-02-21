@@ -225,7 +225,7 @@ export default EditRecipe = ({ route }) => {
                       style={AddRecipeStyles.buttonAtInput}
                       onPress={() => {
                         navigate.navigate("Camera", {
-                          returnTo: "editRecipe",
+                          params: { returnTo: "editRecipe" },
                         });
                       }}
                     >

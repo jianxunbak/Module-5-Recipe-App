@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { useUser } from "../Context/UserContext";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Image, ImageBackground, TouchableOpacity, View } from "react-native";
+import { Image, View } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
 import LocationStyles from "../styles/LocationStyles";
 import { LocationContext } from "../Context/LocationContext";
@@ -30,7 +29,6 @@ export default LocationScreen = () => {
   useEffect(() => {
     getAllRecipes();
   }, []);
-  console.log(allRecipes);
 
   if (isLoading) {
     return (
@@ -42,7 +40,7 @@ export default LocationScreen = () => {
   const handleNavigate = (selectedRecipe) => {
     navigate.navigate("Recipes", {
       screen: "Recipe card",
-      params: { selectedRecipe: selectedRecipe },
+      params: { returnTo: "maps", selectedRecipe: selectedRecipe },
     });
   };
   return (

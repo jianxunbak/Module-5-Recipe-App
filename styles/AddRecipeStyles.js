@@ -5,8 +5,7 @@ const AddRecipeStyles = StyleSheet.create({
   MainContainer: {
     flexDirection: "column",
     justifyContent: "flex-start",
-    marginBottom: 20,
-    marginTop: 20,
+    margin: 20,
   },
   scrollView: {
     flexGrow: 1,
@@ -16,18 +15,16 @@ const AddRecipeStyles = StyleSheet.create({
     marginTop: 60,
   },
   title: {
-    paddingLeft: 20,
-    paddingRight: 20,
     fontSize: 30,
     fontWeight: "bold",
     color: "black",
+    marginLeft: 20,
   },
   subTitle: {
-    paddingLeft: 20,
-    paddingRight: 20,
     fontSize: 20,
     fontWeight: "bold",
     color: "black",
+    marginRight: 20,
   },
   subtitleContainer: {
     flexDirection: "row",
@@ -36,10 +33,9 @@ const AddRecipeStyles = StyleSheet.create({
   input: {
     flexDirection: "column",
     width: width,
-    paddingLeft: 20,
-    paddingRight: 20,
+    // paddingLeft: 20,
     justifyContent: "center", // Ensure vertical centering
-    height: 60, // Adjust the height as needed
+    // height: 60, // Adjust the height as needed
     marginTop: 10,
   },
   label: {
@@ -101,7 +97,7 @@ const AddRecipeStyles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     paddingLeft: 8,
-    width: width - 80,
+    width: width - 70,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     backgroundColor: "#CBC3E3",
@@ -115,9 +111,9 @@ const AddRecipeStyles = StyleSheet.create({
   formError: {
     fontSize: 12,
     color: "red",
-    marginLeft: 20,
     marginTop: 10,
     marginBottom: 10,
+    flexShrink: 0, // Prevents the error message container from shrinking
   },
   backArrow: {
     marginTop: 10,

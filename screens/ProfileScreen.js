@@ -16,20 +16,6 @@ const ProfileScreen = () => {
   const { user, setUser } = useUser();
   const { navigate } = useNavigation();
 
-  useFocusEffect(
-    useCallback(() => {
-      setUser({
-        username: "Faizal | SE8",
-        id: "joyful_avocado_99353",
-        email: "faizal@example.com",
-        memberSince: "19 Aug 2024",
-        about: "Software Engineer | Tech Enthusiast",
-        profilePic:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQG6U7DsIIUVQmkDyihIPWI-aBCmeLli02NQ&s",
-      });
-    }, [])
-  );
-
   return (
     <SafeAreaView style={profileStyles.SafeAreaView}>
       <View style={profileStyles.container}>

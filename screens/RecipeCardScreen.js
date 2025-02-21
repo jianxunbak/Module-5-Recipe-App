@@ -15,7 +15,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useContext } from "react";
 
 export default RecipeCardScreen = ({ route }) => {
-  const { selectedRecipe } = route.params;
+  const { selectedRecipe, returnTo } = route.params;
   const navigate = useNavigation();
   const { favorites, toggleFavorite } = useContext(favoriteContext);
 
@@ -23,6 +23,16 @@ export default RecipeCardScreen = ({ route }) => {
     navigate.navigate("Edit Recipes", { selectedRecipe: selectedRecipe });
   };
 
+  const goBack = () => {
+    console.log(returnTo);
+    if (returnTo === "maps") {
+      navigate.navigate("TabNavigator", { screen: "location" });
+    } else if (returnTo === "fav") {
+      navigate.navigate("DrawerNavigator", { screen: "Favourites" });
+    } else {
+      navigate.navigate("TabNavigator", { screen: "All Recipes" });
+    }
+  };
   const handleDelete = () => {
     console.log(selectedRecipe.id);
     Alert.alert(
@@ -118,7 +128,9 @@ export default RecipeCardScreen = ({ route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={RecipeCardStyles.button}
-            onPress={() => navigate.goBack()}
+            onPress={() => {
+              goBack();
+            }}
           >
             <Text style={RecipeCardStyles.buttonText}>Back</Text>
           </TouchableOpacity>

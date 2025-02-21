@@ -20,7 +20,7 @@ export default CameraScreen = ({ route }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const cameraRef = useRef(null);
   const navigate = useNavigation();
-  const { navigation } = useNavigation();
+  // const parentNavigator = navigate.getParent();
 
   const { returnTo } = route.params || {};
 
@@ -72,6 +72,7 @@ export default CameraScreen = ({ route }) => {
         const selectedImageUri = results.assets[0].uri;
         console.log("print in camera screen");
         console.log(selectedImageUri);
+        console.log(returnTo);
         setSelectedImage(results.assets[0].uri);
         if (returnTo === "addRecipe") {
           navigate.navigate("Add Recipes", { photo: selectedImageUri });
@@ -79,6 +80,8 @@ export default CameraScreen = ({ route }) => {
           navigate.navigate("Edit Recipes", {
             photo: selectedImageUri,
           });
+        } else if (returnTo === "editProfile") {
+          navigate.navigate("editProfile", { photo: selectedImageUri }); // Now this should work
         } else {
           console.log("nowhere to return to");
         }
